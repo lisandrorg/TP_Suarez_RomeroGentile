@@ -24,7 +24,7 @@ class INCUCAI:
                 self.lista_d.append(paciente)
             elif isinstance(paciente, RECEPTOR):
                 self.lista_r.append(paciente)
-                paciente.ordenar()
+            print("Se ha registrado al paciente")
             paciente.match(paciente)
 
     def registrar_vehiculo(self, vehiculo: VEHICULO):
@@ -35,6 +35,7 @@ class INCUCAI:
                 cont = 1
         if cont == 0:
             self.lista_v.append(vehiculo)
+            print("Se ha registrado el vehiculo")
 
     def registrar_cirujano(self, cirujano: CIRUJANO):
         cont = 0
@@ -44,6 +45,7 @@ class INCUCAI:
                 cont = 1
         if cont == 0:
             self.lista_ci.append(cirujano)
+            print("Se ha registrado el cirujano")
 
     def registrar_centro(self, centro: CENTRO):
         cont = 0
@@ -53,6 +55,7 @@ class INCUCAI:
                 cont = 1
         if cont == 0:
             self.lista_c.append(centro)
+            print("Se ha registrado el centro")
 
     def match(self, paciente:PACIENTE):
         if type(paciente) == DONANTE:
@@ -74,7 +77,12 @@ class INCUCAI:
                         if(espera > fmin1):
                             fmin1=espera 
                             pos1=i
-            if (pos1)
+            if (pos3 != 0):
+                pass #organizar viaje prioridad 3
+            elif (pos3 == 0 and pos2 != 0):
+                pass #organizar viaje prioridad 2
+            elif (pos3 == 0 and pos2 == 0 and pos1 != 0):
+                pass #organizar viaje prioridad 1
 
             #falta retirar de la lista, los datos de paciente y receptor en caso de match
 
