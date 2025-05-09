@@ -66,30 +66,30 @@ def main():
                 incucai.registrar_centro(hospital_norte)
             elif (eleccion == 3):
                 ambulancia = VEHICULO(
-                    "Ambulancia", 'AC473FF', 100
+                    "Ambulancia", 'AC473FF', 100, "Hospital Central" 
                 )
                 incucai.registrar_vehiculo(ambulancia)
                 helicoptero = VEHICULO(
-                    "Helicoptero", 'KLI994', 250
+                    "Helicoptero", 'KLI994', 250, "Hospital Norte"
                 )
                 incucai.registrar_vehiculo(helicoptero)
                 avion = VEHICULO(
-                    "Avion", 'AA088OM', 400
+                    "Avion", 'AA088OM', 400, "Hospital Central"
                 )
                 incucai.registrar_vehiculo(avion)
             
             elif (eleccion == 4):
-                cirujano1 = CIRUJANO(matricula = 1, especialidad= 'General')
+                cirujano1 = CIRUJANO( 1, 'General',"Hospital Norte" )
                 incucai.registrar_cirujano(cirujano1)
-                cirujano2 = CIRUJANO(matricula = 2, especialidad= "Gastroenterologo")
+                cirujano2 = CIRUJANO(2, "Gastroenterologo", "Hospital Central")
                 incucai.registrar_cirujano(cirujano2)
-                cirujano3 = CIRUJANO(matricula = 3, especialidad= "Plastico")
+                cirujano3 = CIRUJANO( 3,"Plastico", "Hospital Norte")
                 incucai.registrar_cirujano(cirujano3)
-                cirujano4 = CIRUJANO(matricula = 4, especialidad= "Pulmonar")
+                cirujano4 = CIRUJANO(4,"Pulmonar", "Hospital Central")
                 incucai.registrar_cirujano(cirujano4)
-                cirujano5 = CIRUJANO(matricula = 5, especialidad= "Cardiovascular")
+                cirujano5 = CIRUJANO(5, "Cardiovascular", "Hospital Norte")
                 incucai.registrar_cirujano(cirujano5)
-                cirujano6 = CIRUJANO(matricula = 6, especialidad= "Traumatologo")
+                cirujano6 = CIRUJANO(6, "Traumatologo", "Hospital Central")
                 incucai.registrar_cirujano(cirujano6)
             elif (eleccion == 0):
                 break
