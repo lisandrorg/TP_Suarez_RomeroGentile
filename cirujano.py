@@ -3,3 +3,4 @@ class CIRUJANO:
         self.matricula = matricula
         self.especialidad = especialidad
         self.centro = centro 
+        self.dispo = 1

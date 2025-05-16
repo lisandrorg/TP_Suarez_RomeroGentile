@@ -28,10 +28,6 @@ def main():
                 telefono="1123456789",
                 tipo_de_sangre="O+",
                 centro_de_salud="Hospital Central",
-                fecha_muerte="2025-01-01",
-                hora_muerte="15:30",
-                fecha_ablacion="2025-01-02",
-                hora_ablacion="16:00", 
                 organos= ["Riñon","Piel","Intestino"]) #acordarse que falta los organos que puede donar (habria que hacer un array de organos disponibles con la funcion enum)
                 
                 incucai.registrar_paciente(paciente1)  # Ahora pasamos el objeto paciente1 del tipo DONANTE
