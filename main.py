@@ -42,9 +42,7 @@ def main():
                 centro_de_salud="Hospital Norte",
                 organo="Riñon",
                 espera="2025-04-25",
-                prioridad="Medio",
-                patologia="Insuficiencia renal",
-                estado="Estable")
+                prioridad="Medio")
                 incucai.registrar_paciente(paciente2)  # Ahora pasamos el objeto paciente2 del tipo RECEPTOR
             elif (eleccion == 2):
                 hospital_central = CENTRO(
@@ -73,7 +71,6 @@ def main():
                     "Avion", 'AA088OM', 400, "Hospital Central"
                 )
                 incucai.registrar_vehiculo(avion)
-            
             elif (eleccion == 4):
                 cirujano1 = CIRUJANO( 1, 'General',"Hospital Norte" )
                 incucai.registrar_cirujano(cirujano1)

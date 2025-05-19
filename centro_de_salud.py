@@ -1,8 +1,8 @@
 class CENTRO:
-    def __init__(self, nombre, direccion, partido, provincia, cirujano, vehiculo):
+    def __init__(self, nombre, direccion, partido, provincia):
         self.nombre = nombre
         self.direccion = direccion
         self.partido = partido
         self.provincia = provincia
-        self.cirujano = cirujano
-        self.vehiculo = vehiculo
+        self.cirujano = []
+        self.vehiculo = []

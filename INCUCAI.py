@@ -13,8 +13,6 @@ class INCUCAI:
         self.lista_d = [] #donante
         self.lista_r = [] #receptor
         self.lista_c = [] #centro
-        self.lista_v = [] #vehiculo
-        self.lista_ci = [] #cirujano
         self.procedimiento = [] #[nombre r, nombre d, organo, posicion v, especialidad si o no, posicion ci, fecha ablacion, hora ablacion]
     
     def registrar_paciente(self, paciente:PACIENTE ):
@@ -32,24 +30,32 @@ class INCUCAI:
             paciente.match(paciente)
 
     def registrar_vehiculo(self, vehiculo: VEHICULO):
-        cont = 0
-        for i in self.lista_d + self.lista_r: 
-            if(i.patente == vehiculo.patente or i.patente == vehiculo.patente): #preguntar si seria necesario que el organo que done, este dentro de las opciones de la consigna
-                print("El vehiculo de patente:", vehiculo.patente ,"ya se encuentra registrado.")
-                cont = 1
+        cont, pos = 0, -1
+        for i in self.lista_c:
+            if(vehiculo.centro == i.nombre):
+                pos = i
+        for f in self.lista_c[pos].vehiculo:
+            if f.patente == vehiculo.patente:
+                print('El vehiculo ya esta registrado')
+                cont=1
+                break
         if cont == 0:
-            self.lista_v.append(vehiculo)
-            print("Se ha registrado el vehiculo")
+            self.lista_c[pos].vehiculo.append(vehiculo)
+            print('El vehiculo fue registrado con exito.')
 
     def registrar_cirujano(self, cirujano: CIRUJANO):
-        cont = 0
-        for i in self.lista_d + self.lista_r: 
-            if(i.matricula == cirujano.matricula or i.matricula == cirujano.matricula): #preguntar si seria necesario que el organo que done, este dentro de las opciones de la consigna
-                print("El cirujano de matricula:", cirujano.matricula ,"ya se encuentra registrado.")
-                cont = 1
+        cont, pos = 0, -1
+        for i in self.lista_c:
+            if(cirujano.centro == i.nombre):
+                pos = i
+        for f in self.lista_c[pos].cirujano:
+            if f.matricula == cirujano.matricula:
+                print('El cirujano ya esta registrado')
+                cont=1
+                break
         if cont == 0:
-            self.lista_ci.append(cirujano)
-            print("Se ha registrado el cirujano")
+            self.lista_c[pos].cirujano.append(cirujano)
+            print('El cirujano fue registrado con exito.')
 
     def registrar_centro(self, centro: CENTRO):
         cont = 0
@@ -101,22 +107,23 @@ class INCUCAI:
                             fmin1=espera 
                             pos1=i
             if (pos4 != -1):
+                self.transporte(paciente, pos4)
+                tiempo=self.viaje()
+                self.operar(tiempo, pos4)
+            elif (pos4 == -1 and pos3 != -1):
                 self.transporte(paciente, pos3)
                 tiempo=self.viaje()
                 self.operar(tiempo, pos3)
-            elif (pos3 != -1):
-                self.transporte(paciente, pos3)
-                tiempo=self.viaje()
-                self.operar(tiempo, pos3)
-            elif (pos3 == -1 and pos2 != -1):
+            elif (pos4 == -1 and pos3 == -1 and pos2 != -1):
                 self.transporte(paciente, pos2)
                 tiempo=self.viaje()
                 self.operar(tiempo, pos2)
-            elif (pos3 == -1 and pos2 == -1 and pos1 != -1):
+            elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 != -1):
                 self.transporte(paciente, pos1)
                 tiempo=self.viaje()
                 self.operar(tiempo, pos1)
-            #falta retirar de la lista, los datos de paciente y receptor en caso de match
+            elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 == -1):
+                print('No se ha encontrado una coincidencia')
 
     def transporte(self, paciente: PACIENTE, posicion):
         if type(paciente) == DONANTE:
@@ -143,14 +150,14 @@ class INCUCAI:
                         self.lista_v[i].dispo = 0
                         contv+=1
                         break
-            elif (condicion2==True and condicion1==False):
+            elif (condicion2==True and condicion1==False): #cambiar
                 for i in self.lista_v:
                     if(i.tipo == "Helicoptero" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1):
                         self.procedimiento.append(i.patente)
                         self.lista_v[i].dispo = 0
                         contv+=1
                         break
-            elif (condicion2==False and condicion1==False):
+            elif (condicion2==False and condicion1==False): #cambiar
                 for i in self.lista_v:
                     if(i.tipo == "Ambulancia" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1):
                         self.procedimiento.append(i)
@@ -159,6 +166,7 @@ class INCUCAI:
                         break
             if (contv == 0):
                 print('No se encontraron vehiculos disponibles para el transporte.')
+                self.procedimiento.clear()
             
             #NO HAY COINCIDENCIA, ROMPER#
 
@@ -182,14 +190,10 @@ class INCUCAI:
                 self.procedimiento.append('No')
             if pos_c == None:
                 print('No se ha encontrado un cirujano disponible para operarlo')
+                self.procedimiento.clear()
             else:
-                self.procedimiento.append(pos_c)
+                self.procedimiento.append(pos_c) #cambiar
                 self.lista_ci[pos_c].dispo=0
-
-            #NO HAY COINCIDENCIA, ROMPER#
-
-            if type(paciente) == DONANTE:
-                pass
 
     def viaje(self):
         self.procedimiento.append(datetime.now().date())
@@ -214,18 +218,25 @@ class INCUCAI:
     def operar(self, tiempo, posicion):
         if tiempo > 20:
             print('La ablacion ha superado las 20 horas')
-            return
         else:
             exito = random.randint(1,10)
             if (self.procedimiento[4] == 'Si'):
                 if exito > 2:
-                    self.procedimiento.clear()
+                    print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'se realizo exitosamente.')
+                    del(self.lista_r[posicion])
                 else:
                     self.lista_r[posicion].prioridad = 4
             else:
                 if exito > 5:
-                    pass
+                    print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'se realizo exitosamente.')
+                    del(self.lista_r[posicion])
                 else:
-                    pass
-
+                    self.lista_r[posicion].prioridad = 4
+            self.lista_ci[self.procedimiento[5]].dispo = 1
+            pos=next((c for c in self.lista_d if c.nombre == self.procedimiento[1]), None)
+            poso=next((o for o in self.lista_d[pos].organos if o == self.procedimiento[2]), None)
+            del(self.lista_d[pos].organos[poso])
+            if len(self.lista_d[pos].organos) == 0:
+                del (self.lista_d[pos])
+            self.procedimiento.clear()
 
