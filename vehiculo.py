@@ -8,3 +8,4 @@ class VEHICULO :
         self.centro = centro
         self.dispo = 1 
         self.registro = []
+#ver este tema de llevar registro de todos los viajes de cada vehiculo.

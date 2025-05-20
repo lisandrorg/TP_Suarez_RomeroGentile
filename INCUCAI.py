@@ -13,16 +13,38 @@ class INCUCAI:
 
         self.lista_c = [] #centro
         self.procedimiento = [] #[nombre r, nombre d, posicion centro donante, posicion centro receptor, organo, posicion v en centro, especialidad si o no, posicion ci en centro, fecha ablacion, hora ablacion]
-    
-    def registrar_centro(self, centro: CENTRO):
+        self.lista_r = []
+        self.lista_d = []
+
+    def registrar_paciente(self, paciente:PACIENTE): 
         cont = 0
         for i in self.lista_d + self.lista_r: 
-            if(i.nombre == centro.nombre or i.nombre == centro.nombre): #preguntar si seria necesario que el organo que done, este dentro de las opciones de la consigna
+            if(i.DNI == paciente.DNI or i.DNI == paciente.DNI):
+                print("El paciente con DNI:", paciente.DNI ,"ya se encuentra registrado.")
+                cont += 1
+
+        for i in self.lista_c:
+            if(i.nombre != paciente.centro_de_salud):
+                print("el paciente con DNI:", paciente.DNI, "no tiene un centro de salud asociado.")
+                cont +=1
+
+        if cont == 0:
+            if isinstance(paciente, DONANTE):
+                self.lista_d.append(paciente)
+            elif isinstance(paciente, RECEPTOR):
+                self.lista_r.append(paciente)
+            print("Se ha registrado al paciente")
+            INCUCAI.match(paciente)
+
+    def registrar_centro(self, centro: CENTRO):
+        cont = 0
+        for i in self.lista_c: 
+            if(i.nombre == centro.nombre):
                 print("El centro:", centro.nombre ,"ya se encuentra registrado.")
-                cont = 1
+                cont += 1
         if cont == 0:
             self.lista_c.append(centro)
-            print("Se ha registrado el centro")
+            print("Se ha registrado el centro.")
 
     def match(self, paciente:PACIENTE):
         if type(paciente) == DONANTE:
@@ -130,16 +152,16 @@ class INCUCAI:
 
 
             ORGANO_A_ESPECIALIDAD = {
-    "Corazon": "Cardiovascular",
-    "Higado": "Gastorenterologo",
-    "Riñon": "Gastorenterologo",
-    "Pulmon": "Pulmonar",
-    "Pancreas": "Gastorenterologo",
-    "Intestino": "Gastorenterologo",
-    "Huesos": "Traumatologo",
-    "Corneas": "Plastico",
-    "Piel": "Plastico"
-}
+        "Corazon": "Cardiovascular",
+        "Higado": "Gastorenterologo",
+        "Riñon": "Gastorenterologo",
+        "Pulmon": "Pulmonar",
+        "Pancreas": "Gastorenterologo",
+        "Intestino": "Gastorenterologo",
+        "Huesos": "Traumatologo",
+        "Corneas": "Plastico",
+        "Piel": "Plastico"
+        }
             
             pos_c=next((c for c in self.lista_ci if (c.especialidad == ORGANO_A_ESPECIALIDAD.get(self.procedimiento[2]) and c.centro == paciente.centro_de_salud and c.dispo == 1)), None)
             self.procedimiento.append('Si')

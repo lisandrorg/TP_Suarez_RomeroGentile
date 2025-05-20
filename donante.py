@@ -7,4 +7,4 @@ class DONANTE(PACIENTE):
         self.hora_muerte = hora_muerte
         self.fecha_ablacion = fecha_ablacion
         self.hora_ablacion = hora_ablacion
-        self.organos = organos #acordarse de al momento de crear un array en el main, de que sea una lista
+        self.organos = organos 

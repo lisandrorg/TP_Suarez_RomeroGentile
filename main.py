@@ -9,11 +9,12 @@ from organo import ORGANOS
 
 def main():
     incucai = INCUCAI()
+    centro = CENTRO()
     i=0
     while i == 0:
             print("\nMenú:")
-            print("1. Registrar Paciente")
-            print("2. Registrar centro de atencion")
+            print("1. Registrar paciente")
+            print("2. Registrar centro de salud")
             print("3. Registrar vehiculo")
             print("4. Registrar cirujano")
             print("0. Salir")
@@ -28,9 +29,9 @@ def main():
                 telefono="1123456789",
                 tipo_de_sangre="O+",
                 centro_de_salud="Hospital Central",
-                organos= ["Riñon","Piel","Intestino"]) #acordarse que falta los organos que puede donar (habria que hacer un array de organos disponibles con la funcion enum)
+                organos= ["Riñon","Piel","Intestino"]) 
                 
-                incucai.registrar_paciente(paciente1)  # Ahora pasamos el objeto paciente1 del tipo DONANTE
+                incucai.registrar_paciente(paciente1) 
                 
                 paciente2 = RECEPTOR(
                 nombre="Lucia Gómez",
@@ -42,7 +43,10 @@ def main():
                 centro_de_salud="Hospital Norte",
                 organo="Riñon",
                 espera="2025-04-25",
-                prioridad="Medio")
+                prioridad="Medio", 
+                patologia = "insuficiencia renal",
+                estado = "estable")
+
                 incucai.registrar_paciente(paciente2)  # Ahora pasamos el objeto paciente2 del tipo RECEPTOR
             elif (eleccion == 2):
                 hospital_central = CENTRO(
@@ -50,6 +54,7 @@ def main():
                 direccion="Av. de la Salud 1234, Ciudad Central",
                 partido="Partido Central",
                 provincia="Provincia Central")
+                
                 incucai.registrar_centro(hospital_central)
                 
                 hospital_norte = CENTRO(
@@ -57,33 +62,34 @@ def main():
                 direccion="Av. de la Salud 5678, Ciudad Norte",
                 partido="Partido Norte",
                 provincia="Provincia Norte")
+                
                 incucai.registrar_centro(hospital_norte)
             elif (eleccion == 3):
                 ambulancia = VEHICULO(
                     "Ambulancia", 'AC473FF', 100, "Hospital Central" 
                 )
-                incucai.registrar_vehiculo(ambulancia)
+                centro.registrar_vehiculo(ambulancia)
                 helicoptero = VEHICULO(
                     "Helicoptero", 'KLI994', 250, "Hospital Norte"
                 )
-                incucai.registrar_vehiculo(helicoptero)
+                centro.registrar_vehiculo(helicoptero)
                 avion = VEHICULO(
                     "Avion", 'AA088OM', 400, "Hospital Central"
                 )
-                incucai.registrar_vehiculo(avion)
+                centro.registrar_vehiculo(avion)
             elif (eleccion == 4):
                 cirujano1 = CIRUJANO( 1, 'General',"Hospital Norte" )
-                incucai.registrar_cirujano(cirujano1)
+                centro.registrar_cirujano(cirujano1)
                 cirujano2 = CIRUJANO(2, "Gastroenterologo", "Hospital Central")
-                incucai.registrar_cirujano(cirujano2)
+                centro.registrar_cirujano(cirujano2)
                 cirujano3 = CIRUJANO( 3,"Plastico", "Hospital Norte")
-                incucai.registrar_cirujano(cirujano3)
+                centro.registrar_cirujano(cirujano3)
                 cirujano4 = CIRUJANO(4,"Pulmonar", "Hospital Central")
-                incucai.registrar_cirujano(cirujano4)
+                centro.registrar_cirujano(cirujano4)
                 cirujano5 = CIRUJANO(5, "Cardiovascular", "Hospital Norte")
-                incucai.registrar_cirujano(cirujano5)
+                centro.registrar_cirujano(cirujano5)
                 cirujano6 = CIRUJANO(6, "Traumatologo", "Hospital Central")
-                incucai.registrar_cirujano(cirujano6)
+                centro.registrar_cirujano(cirujano6)
             elif (eleccion == 0):
                 break
             else:
