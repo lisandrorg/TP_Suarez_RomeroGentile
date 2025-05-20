@@ -10,53 +10,10 @@ import random
 
 class INCUCAI:
     def __init__(self):
-        self.lista_d = [] #donante
-        self.lista_r = [] #receptor
+
         self.lista_c = [] #centro
-        self.procedimiento = [] #[nombre r, nombre d, organo, posicion v, especialidad si o no, posicion ci, fecha ablacion, hora ablacion]
+        self.procedimiento = [] #[nombre r, nombre d, posicion centro donante, posicion centro receptor, organo, posicion v en centro, especialidad si o no, posicion ci en centro, fecha ablacion, hora ablacion]
     
-    def registrar_paciente(self, paciente:PACIENTE ):
-        cont = 0
-        for i in self.lista_d + self.lista_r: 
-            if(i.DNI == paciente.DNI or i.DNI == paciente.DNI):
-                print("El paciente con DNI:", paciente.DNI ,"ya se encuentra registrado.")
-                cont = 1
-        if cont == 0:
-            if isinstance(paciente, DONANTE):
-                self.lista_d.append(paciente)
-            elif isinstance(paciente, RECEPTOR):
-                self.lista_r.append(paciente)
-            print("Se ha registrado al paciente")
-            paciente.match(paciente)
-
-    def registrar_vehiculo(self, vehiculo: VEHICULO):
-        cont, pos = 0, -1
-        for i in self.lista_c:
-            if(vehiculo.centro == i.nombre):
-                pos = i
-        for f in self.lista_c[pos].vehiculo:
-            if f.patente == vehiculo.patente:
-                print('El vehiculo ya esta registrado')
-                cont=1
-                break
-        if cont == 0:
-            self.lista_c[pos].vehiculo.append(vehiculo)
-            print('El vehiculo fue registrado con exito.')
-
-    def registrar_cirujano(self, cirujano: CIRUJANO):
-        cont, pos = 0, -1
-        for i in self.lista_c:
-            if(cirujano.centro == i.nombre):
-                pos = i
-        for f in self.lista_c[pos].cirujano:
-            if f.matricula == cirujano.matricula:
-                print('El cirujano ya esta registrado')
-                cont=1
-                break
-        if cont == 0:
-            self.lista_c[pos].cirujano.append(cirujano)
-            print('El cirujano fue registrado con exito.')
-
     def registrar_centro(self, centro: CENTRO):
         cont = 0
         for i in self.lista_d + self.lista_r: 
@@ -131,6 +88,7 @@ class INCUCAI:
             self.procedimiento.append(paciente.nombre)
             self.procedimiento.append(self.lista_r[posicion].organo)
             cont = 0
+            p_centro_receptor = p_centro_donante = -1
             for i in self.lista_c:
                 if(paciente.centro_de_salud == i.nombre):
                     p_centro_donante = i 
