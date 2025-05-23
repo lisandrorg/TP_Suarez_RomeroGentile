@@ -16,7 +16,8 @@ class INCUCAI:
         self.lista_r = []
         self.lista_d = []
 
-    def registrar_paciente(self, paciente:PACIENTE): 
+    def registrar_paciente(self, paciente:RECEPTOR|DONANTE): 
+        
         cont = 0
         for i in self.lista_d + self.lista_r: 
             if(i.DNI == paciente.DNI or i.DNI == paciente.DNI):
@@ -31,10 +32,15 @@ class INCUCAI:
         if cont == 0:
             if isinstance(paciente, DONANTE):
                 self.lista_d.append(paciente)
+                print("Se ha registrado al paciente")
+                INCUCAI.match(paciente)
             elif isinstance(paciente, RECEPTOR):
                 self.lista_r.append(paciente)
-            print("Se ha registrado al paciente")
-            INCUCAI.match(paciente)
+                print("Se ha registrado al paciente")        
+                INCUCAI.match(paciente)
+            else:
+                print('No se ha podido registrar al paciente')
+        return
 
     def registrar_centro(self, centro: CENTRO):
         cont = 0
@@ -45,6 +51,7 @@ class INCUCAI:
         if cont == 0:
             self.lista_c.append(centro)
             print("Se ha registrado el centro.")
+        return
 
     def match(self, paciente:PACIENTE):
         if type(paciente) == DONANTE:
@@ -103,8 +110,9 @@ class INCUCAI:
                 self.operar(tiempo, pos1)
             elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 == -1):
                 print('No se ha encontrado una coincidencia')
+        return
 
-    def transporte(self, paciente: PACIENTE, posicion):
+    def transporte(self, paciente: PACIENTE, posicion: int):
         if type(paciente) == DONANTE:
             self.procedimiento.append(self.lista_r[posicion].nombre)
             self.procedimiento.append(paciente.nombre)
@@ -174,6 +182,7 @@ class INCUCAI:
             else:
                 self.procedimiento.append(pos_c) #cambiar
                 self.lista_ci[pos_c].dispo=0
+        return
 
     def viaje(self):
         self.procedimiento.append(datetime.now().date())
@@ -195,7 +204,7 @@ class INCUCAI:
 
         return tiempo
 
-    def operar(self, tiempo, posicion):
+    def operar(self, tiempo: int , posicion: int):
         if tiempo > 20:
             print('La ablacion ha superado las 20 horas')
         else:
@@ -219,4 +228,4 @@ class INCUCAI:
             if len(self.lista_d[pos].organos) == 0:
                 del (self.lista_d[pos])
             self.procedimiento.clear()
-
+        return

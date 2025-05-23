@@ -1,7 +1,7 @@
 from viajes import VIAJES
 
 class VEHICULO :
-    def __init__(self, tipo, velocidad, patente, centro):
+    def __init__(self, tipo: str, velocidad: int, patente: str, centro: str):
         self.tipo = tipo 
         self.patente = patente
         self.velocidad = velocidad

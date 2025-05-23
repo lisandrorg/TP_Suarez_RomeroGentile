@@ -8,7 +8,7 @@ from cirujano import CIRUJANO
 
 class CENTRO:
 
-    def __init__(self, nombre, direccion, partido, provincia):
+    def __init__(self, nombre: str, direccion: str, partido: str, provincia: str):
         self.nombre = nombre
         self.direccion = direccion
         self.partido = partido
@@ -37,7 +37,6 @@ class CENTRO:
         if (cont == 0):
             self.cirujanos.append(cirujano)
             print("el vehiculo se ha registrado con exito.")
-
 
 
   

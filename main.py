@@ -4,7 +4,6 @@ from donante import DONANTE
 from receptor import RECEPTOR
 from vehiculo import VEHICULO
 from INCUCAI import INCUCAI
-from paciente import PACIENTE
 from organo import ORGANOS
 
 def main():
