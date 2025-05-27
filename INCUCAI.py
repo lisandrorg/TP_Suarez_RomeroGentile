@@ -9,6 +9,7 @@ from viajes import VIAJES
 import random
 
 class INCUCAI:
+
     def __init__(self):
 
         self.lista_c = [] #centro
@@ -57,6 +58,7 @@ class INCUCAI:
         return
 
     def match_inmediato(self, paciente: DONANTE):
+        
         pos4, pos3, pos2, pos1 = -1, -1, -1, -1
         for k in paciente.organos:
             if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1:
@@ -112,6 +114,7 @@ class INCUCAI:
             self.operar(tiempo, pos1)
         elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 == -1):
             print('No se ha encontrado una coincidencia')
+        
         return
 
     def match_general(self):
@@ -176,6 +179,7 @@ class INCUCAI:
                 print('No se ha encontrado una coincidencia')            
 
     def transporte(self, paciente: DONANTE, posicion: int):
+
         p_centro_donante = p_centro_receptor = - 1
         condicion1 = (self.lista_c[p_centro_donante].provincia != self.lista_c[p_centro_receptor].provincia)
         condicion2 =(self.lista_c[p_centro_donante].partido != self.lista_c[p_centro_receptor].partido)
@@ -216,26 +220,33 @@ class INCUCAI:
             if( i.dispo == 1 and i.especialidad ==  "Gastroenterolo" and (self.procedimiento[2] == "Intestinos" or self.procedimiento[2] == "Riñon" or self.procedimiento[2] == "Higado" or self.procedimiento[2] == "Pancreas")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
+                i.dispo = 0
                 break
             if( i.dispo == 1 and i.especialidad ==  "Traumatologo" and (self.procedimiento[2] == "Hueso")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
+                i.dispo = 0
                 break
             if(i.dispo == 1 and i.especialidad ==  "Cardiovascular" and (self.procedimiento[2] == "Corazon")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
+                i.dispo = 0
                 break
             if(i.dispo == 1 and i.especialidad ==  "Pulmonar" and (self.procedimiento[2] == "Pulmones")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
+                i.dispo = 0
                 break
             if(i.dispo == 1 and i.especialidad ==  "Plastico" and (self.procedimiento[2] == "Piel" or self.procedimiento[2] == "Corneas")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
+                i.dispo = 0
                 break
             if(i.dispo == 1 and i.especialidad ==  "General"):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
+                i.dispo = 0
+                break
             else:
                 print("no se ha podido encontrar un doctor disponible")
                 self.procedimiento.clear()
@@ -243,15 +254,19 @@ class INCUCAI:
         return
 
     def viaje(self):
+
         self.procedimiento.append(datetime.now().date())
         self.procedimiento.append(datetime.now().time())
+
         if self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].tipo == 'Ambulancia':
             trafico = random.randint(0,40)
             distancia = random.randint(60,150)
             tiempo = (distancia + trafico)/self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].velocidad
+
         elif self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].tipo == 'Helicoptero':
             distancia=random.randint(150, 350)
             tiempo = distancia/self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].velocidad
+
         elif self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].tipo == 'Avion':
             distancia = random.randint(350, 1000)
             tiempo = self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].velocidad
@@ -263,8 +278,10 @@ class INCUCAI:
         return tiempo
 
     def operar(self, tiempo: int , posicion: int):
+
         if tiempo > 20:
-            print('La ablacion ha superado las 20 horas')
+            print('La ablacion ha superado las 20 horas.')
+
         else:
             exito = random.randint(1,10)
             if (self.procedimiento[4] == 'Si'):
@@ -274,18 +291,24 @@ class INCUCAI:
                 else:
                     print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'no se realizo exitosamente.')
                     self.lista_r[posicion].prioridad = 4
-            else:
+            else: 
                 if exito > 5:
                     print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'se realizo exitosamente.')
                     del(self.lista_r[posicion])
+
                 else:
                     print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'no se realizo exitosamente.')
                     self.lista_r[posicion].prioridad = 4
-            self.lista_c[self.procedimiento[3]].cirujanos[self.procedimiento[7]].dispo = 1
-            pos=next((c for c in self.lista_d if c.nombre == self.procedimiento[1]), None)
-            poso=next((o for o in self.lista_d[pos].organos if o == self.procedimiento[2]), None)
-            del(self.lista_d[pos].organos[poso])
-            if len(self.lista_d[pos].organos) == 0:
-                del (self.lista_d[pos])
-            self.procedimiento.clear()
+
+        self.lista_c[self.procedimiento[3]].cirujanos[self.procedimiento[7]].dispo = 1
+        pos=next((c for c in self.lista_d if c.nombre == self.procedimiento[1]), None)
+        poso=next((o for o in self.lista_d[pos].organos if o == self.procedimiento[2]), None)
+        del(self.lista_d[pos].organos[poso])
+        if len(self.lista_d[pos].organos) == 0:
+            del (self.lista_d[pos])
+        self.procedimiento.clear()
+
         return
+
+def batata():
+    pass
