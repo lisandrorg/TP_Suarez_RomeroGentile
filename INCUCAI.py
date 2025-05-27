@@ -176,20 +176,7 @@ class INCUCAI:
                 print('No se ha encontrado una coincidencia')            
 
     def transporte(self, paciente: DONANTE, posicion: int):
-        self.procedimiento.append(self.lista_r[posicion].nombre)
-        self.procedimiento.append(paciente.nombre)
-        self.procedimiento.append(self.lista_r[posicion].organo)
-        cont = 0
-        p_centro_receptor = p_centro_donante = -1
-        for i in self.lista_c:
-            if(paciente.centro_de_salud == i.nombre):
-                p_centro_donante = i 
-                cont +=1
-            if(self.lista_r[posicion].centro_de_salud == i.nombre):
-                p_centro_receptor = i
-        if cont == 0:
-            print("El centro de salud del donante no se encuentra registrado.")
-        
+        p_centro_donante = p_centro_receptor = - 1
         condicion1 = (self.lista_c[p_centro_donante].provincia != self.lista_c[p_centro_receptor].provincia)
         condicion2 =(self.lista_c[p_centro_donante].partido != self.lista_c[p_centro_receptor].partido)
         cond_avion = (i.tipo == "Avion" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1)
@@ -221,19 +208,38 @@ class INCUCAI:
             print('No se encontraron vehiculos disponibles para el transporte.')
             self.procedimiento.clear()
             return
-        
-        tengo que buscar un cirujano del centro del donante para el procedimiento, en lo posible que tenga la especidalidad necesaria sino cualquier otro, tiene que estar disponible
-        guardar en si o no, si encuentro con especialidad, y la posicion en el array de cirujanso del centro donante
 
+        ############
+    
+        for i in self.lista_c[self.procedimiento[3]].cirujanos:
 
-
-        for i in self.lista_c[self.procedimiento[3]].cirujanos[i]:
-            if( i.dispo == 1 and i.especialidad ==  "Gastroenterolo" and (self.procedimiento[2] == "Intestinos" or self.procedimiento[2] == "Riñón" or self.procedimiento[2] == "Hígado" or self.procedimiento[2] == "Páncreas")):
+            if( i.dispo == 1 and i.especialidad ==  "Gastroenterolo" and (self.procedimiento[2] == "Intestinos" or self.procedimiento[2] == "Riñon" or self.procedimiento[2] == "Higado" or self.procedimiento[2] == "Pancreas")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
-            
-            
-
+                break
+            if( i.dispo == 1 and i.especialidad ==  "Traumatologo" and (self.procedimiento[2] == "Hueso")):
+                self.procedimiento.append("Si")
+                self.procedimiento.append(i)
+                break
+            if(i.dispo == 1 and i.especialidad ==  "Cardiovascular" and (self.procedimiento[2] == "Corazon")):
+                self.procedimiento.append("Si")
+                self.procedimiento.append(i)
+                break
+            if(i.dispo == 1 and i.especialidad ==  "Pulmonar" and (self.procedimiento[2] == "Pulmones")):
+                self.procedimiento.append("Si")
+                self.procedimiento.append(i)
+                break
+            if(i.dispo == 1 and i.especialidad ==  "Plastico" and (self.procedimiento[2] == "Piel" or self.procedimiento[2] == "Corneas")):
+                self.procedimiento.append("Si")
+                self.procedimiento.append(i)
+                break
+            if(i.dispo == 1 and i.especialidad ==  "General"):
+                self.procedimiento.append("Si")
+                self.procedimiento.append(i)
+            else:
+                print("no se ha podido encontrar un doctor disponible")
+                self.procedimiento.clear()
+                break
         return
 
     def viaje(self):
