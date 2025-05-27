@@ -96,22 +96,27 @@ class INCUCAI:
                     elif(espera < fmin1):
                         fmin1=espera 
                         pos1=i
+                    
         if (pos4 != -1):
             self.transporte(paciente, pos4)
             tiempo=self.viaje()
             self.operar(tiempo, pos4)
+
         elif (pos4 == -1 and pos3 != -1):
             self.transporte(paciente, pos3)
             tiempo=self.viaje()
             self.operar(tiempo, pos3)
+
         elif (pos4 == -1 and pos3 == -1 and pos2 != -1):
             self.transporte(paciente, pos2)
             tiempo=self.viaje()
             self.operar(tiempo, pos2)
+
         elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 != -1):
             self.transporte(paciente, pos1)
             tiempo=self.viaje()
             self.operar(tiempo, pos1)
+
         elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 == -1):
             print('No se ha encontrado una coincidencia')
         
@@ -257,6 +262,10 @@ class INCUCAI:
 
         self.procedimiento.append(datetime.now().date())
         self.procedimiento.append(datetime.now().time())
+        #ver horario de cirujia
+        #tiempo + date time de ablacion(en mismo formato q tiempo) < 20 hs.
+
+
 
         if self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].tipo == 'Ambulancia':
             trafico = random.randint(0,40)
@@ -264,13 +273,12 @@ class INCUCAI:
             tiempo = (distancia + trafico)/self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].velocidad
 
         elif self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].tipo == 'Helicoptero':
-            distancia=random.randint(150, 350)
+            distancia = random.randint(150, 350)
             tiempo = distancia/self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].velocidad
 
         elif self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].tipo == 'Avion':
             distancia = random.randint(350, 1000)
-            tiempo = self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].velocidad
-        #hacer pasar el tiempo#
+            tiempo = distancia / self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].velocidad
 
         viaje = VIAJES(self.procedimiento[2], distancia, self.procedimiento[7])
         self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].registro.append(viaje)
@@ -291,6 +299,7 @@ class INCUCAI:
                 else:
                     print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'no se realizo exitosamente.')
                     self.lista_r[posicion].prioridad = 4
+                    self.lista_r[posicion].estado = "inestable"
             else: 
                 if exito > 5:
                     print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'se realizo exitosamente.')
@@ -299,6 +308,7 @@ class INCUCAI:
                 else:
                     print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'no se realizo exitosamente.')
                     self.lista_r[posicion].prioridad = 4
+                    self.lista_r[posicion].estado = "inestable"
 
         self.lista_c[self.procedimiento[3]].cirujanos[self.procedimiento[7]].dispo = 1
         pos=next((c for c in self.lista_d if c.nombre == self.procedimiento[1]), None)
