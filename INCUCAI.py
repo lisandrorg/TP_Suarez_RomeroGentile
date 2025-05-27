@@ -7,6 +7,7 @@ from cirujano import CIRUJANO
 from datetime import datetime
 from viajes import VIAJES
 import random
+from datetime import datetime, time, timedelta
 
 class INCUCAI:
 
@@ -99,21 +100,33 @@ class INCUCAI:
                     
         if (pos4 != -1):
             self.transporte(paciente, pos4)
+            aux = self.transporte()
+            if(aux): 
+                return
             tiempo=self.viaje()
             self.operar(tiempo, pos4)
 
         elif (pos4 == -1 and pos3 != -1):
             self.transporte(paciente, pos3)
+            aux = self.transporte()
+            if(aux): 
+                return
             tiempo=self.viaje()
             self.operar(tiempo, pos3)
 
         elif (pos4 == -1 and pos3 == -1 and pos2 != -1):
             self.transporte(paciente, pos2)
+            aux = self.transporte()
+            if(aux): 
+                return
             tiempo=self.viaje()
             self.operar(tiempo, pos2)
 
         elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 != -1):
             self.transporte(paciente, pos1)
+            aux = self.transporte()
+            if(aux): 
+                return
             tiempo=self.viaje()
             self.operar(tiempo, pos1)
 
@@ -164,24 +177,42 @@ class INCUCAI:
                         elif(espera < fmin1):
                             fmin1=espera 
                             pos1=i
+
             if (pos4 != -1):
                 self.transporte(d, pos4)
+                aux = self.transporte()
+                if(aux == True): 
+                    return
                 tiempo=self.viaje()
                 self.operar(tiempo, pos4)
+
             elif (pos4 == -1 and pos3 != -1):
                 self.transporte(d, pos3)
+                aux = self.transporte()
+                if(aux == True): 
+                    return
                 tiempo=self.viaje()
                 self.operar(tiempo, pos3)
+
             elif (pos4 == -1 and pos3 == -1 and pos2 != -1):
                 self.transporte(d, pos2)
+                aux = self.transporte()
+                if(aux == True): 
+                    return
                 tiempo=self.viaje()
                 self.operar(tiempo, pos2)
+                
             elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 != -1):
                 self.transporte(d, pos1)
+                aux = self.transporte()
+                if(aux == True): 
+                    return
                 tiempo=self.viaje()
                 self.operar(tiempo, pos1)
+
             elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 == -1):
-                print('No se ha encontrado una coincidencia')            
+                print('No se ha encontrado una coincidencia')
+        return                  
 
     def transporte(self, paciente: DONANTE, posicion: int):
 
@@ -192,6 +223,7 @@ class INCUCAI:
         cond_helicoptero = (i.tipo == "Helicoptero" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1)
         cond_ambulancia = (i.tipo == "Ambulancia" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1)
         contv=0
+
         if (condicion1==True):
             for i in self.lista_c[p_centro_donante].vehiculos:
                 if(cond_avion == True):
@@ -199,6 +231,7 @@ class INCUCAI:
                     self.lista_c[p_centro_donante].vehiculos[i].dispo = 0
                     contv+=1
                     break
+
         elif (condicion2==True and condicion1==False): 
             for i in self.lista_c[p_centro_donante].vehiculos:
                 if(cond_avion == False and cond_helicoptero == True):
@@ -206,6 +239,7 @@ class INCUCAI:
                     self.lista_c[p_centro_donante].vehiculos[i].dispo = 0
                     contv+=1
                     break
+
         elif (condicion2==False and condicion1==False): 
             for i in self.lista_c[p_centro_donante].vehiculos:
                 if(cond_avion == False and cond_helicoptero == False and cond_ambulancia == True):
@@ -213,10 +247,11 @@ class INCUCAI:
                     self.lista_c[p_centro_donante].vehiculos[i].dispo = 0
                     contv+=1
                     break
+
         if (contv == 0):
             print('No se encontraron vehiculos disponibles para el transporte.')
             self.procedimiento.clear()
-            return
+            return True
 
         ############
     
@@ -255,18 +290,15 @@ class INCUCAI:
             else:
                 print("no se ha podido encontrar un doctor disponible")
                 self.procedimiento.clear()
-                break
-        return
+                return True
+               
+        return 
 
     def viaje(self):
 
         self.procedimiento.append(datetime.now().date())
         self.procedimiento.append(datetime.now().time())
-        #ver horario de cirujia
-        #tiempo + date time de ablacion(en mismo formato q tiempo) < 20 hs.
-
-
-
+    
         if self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].tipo == 'Ambulancia':
             trafico = random.randint(0,40)
             distancia = random.randint(60,150)
@@ -286,8 +318,11 @@ class INCUCAI:
         return tiempo
 
     def operar(self, tiempo: int , posicion: int):
-
-        if tiempo > 20:
+        
+        hora_cirugia = datetime.combine(datetime.today(), self.procedimiento[9]) + timedelta(hours = 20)
+        hora_llegada = datetime.combine(datetime.today(), self.procedimiento[9]) + timedelta(hours = tiempo)
+        
+        if hora_llegada > hora_cirugia:
             print('La ablacion ha superado las 20 horas.')
 
         else:
@@ -317,8 +352,6 @@ class INCUCAI:
         if len(self.lista_d[pos].organos) == 0:
             del (self.lista_d[pos])
         self.procedimiento.clear()
+        #retocar
 
         return
-
-def batata():
-    pass
