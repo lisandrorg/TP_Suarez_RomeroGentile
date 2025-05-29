@@ -14,9 +14,15 @@ class INCUCAI:
     def __init__(self):
 
         self.lista_c = [] #centro
-        self.procedimiento = [] #[nombre r, nombre d, organo, posicion centro donante, posicion centro receptor, posicion v en centro, especialidad si o no, posicion ci en centro, fecha ablacion, hora ablacion]
+        self.procedimiento = [] #[dni r, dni d, organo, posicion centro donante, posicion centro receptor, posicion v en centro, especialidad si o no, posicion ci en centro, fecha ablacion, hora ablacion]
         self.lista_r = []
         self.lista_d = []
+
+    def buscar_centro(self, nombre: str):
+        for i in self.lista_c:
+            if i.nombre == nombre:
+                return i
+        return False
 
     def registrar_paciente(self, paciente:RECEPTOR|DONANTE): 
         
@@ -99,6 +105,8 @@ class INCUCAI:
                         pos1=i
                     
         if (pos4 != -1):
+            self.procedimiento.append(self.lista_r[pos].DNI)
+            self.procedimiento.append(paciente.DNI)
             self.transporte(paciente, pos4)
             aux = self.transporte()
             if(aux): 
@@ -107,6 +115,8 @@ class INCUCAI:
             self.operar(tiempo, pos4)
 
         elif (pos4 == -1 and pos3 != -1):
+            self.procedimiento.append(self.lista_r[pos3].DNI)
+            self.procedimiento.append(paciente.DNI)
             self.transporte(paciente, pos3)
             aux = self.transporte()
             if(aux): 
@@ -115,6 +125,8 @@ class INCUCAI:
             self.operar(tiempo, pos3)
 
         elif (pos4 == -1 and pos3 == -1 and pos2 != -1):
+            self.procedimiento.append(self.lista_r[pos2].DNI)
+            self.procedimiento.append(paciente.DNI)
             self.transporte(paciente, pos2)
             aux = self.transporte()
             if(aux): 
@@ -123,6 +135,8 @@ class INCUCAI:
             self.operar(tiempo, pos2)
 
         elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 != -1):
+            self.procedimiento.append(self.lista_r[pos1].DNI)
+            self.procedimiento.append(paciente.DNI)
             self.transporte(paciente, pos1)
             aux = self.transporte()
             if(aux): 
@@ -139,6 +153,7 @@ class INCUCAI:
         cont, pos4, pos3, pos2, pos1 = 0, -1, -1, -1, -1
         for d in self.lista_d:
             if cont != 0:
+                posd = d
                 break
             for k in d.organos:
                 if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1:
@@ -179,6 +194,8 @@ class INCUCAI:
                             pos1=i
 
             if (pos4 != -1):
+                self.procedimiento.append(self.lista_r[pos4].DNI)
+                self.procedimiento.append(self.lista_d[posd].DNI)
                 self.transporte(d, pos4)
                 aux = self.transporte()
                 if(aux == True): 
@@ -187,6 +204,8 @@ class INCUCAI:
                 self.operar(tiempo, pos4)
 
             elif (pos4 == -1 and pos3 != -1):
+                self.procedimiento.append(self.lista_r[pos3].DNI)
+                self.procedimiento.append(self.lista_d[posd].DNI)
                 self.transporte(d, pos3)
                 aux = self.transporte()
                 if(aux == True): 
@@ -195,6 +214,8 @@ class INCUCAI:
                 self.operar(tiempo, pos3)
 
             elif (pos4 == -1 and pos3 == -1 and pos2 != -1):
+                self.procedimiento.append(self.lista_r[pos2].DNI)
+                self.procedimiento.append(self.lista_d[posd].DNI)
                 self.transporte(d, pos2)
                 aux = self.transporte()
                 if(aux == True): 
@@ -203,6 +224,8 @@ class INCUCAI:
                 self.operar(tiempo, pos2)
                 
             elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 != -1):
+                self.procedimiento.append(self.lista_r[pos1].DNI)
+                self.procedimiento.append(self.lista_d[posd].DNI)
                 self.transporte(d, pos1)
                 aux = self.transporte()
                 if(aux == True): 
@@ -346,12 +369,21 @@ class INCUCAI:
                     self.lista_r[posicion].estado = "inestable"
 
         self.lista_c[self.procedimiento[3]].cirujanos[self.procedimiento[7]].dispo = 1
-        pos=next((c for c in self.lista_d if c.nombre == self.procedimiento[1]), None)
-        poso=next((o for o in self.lista_d[pos].organos if o == self.procedimiento[2]), None)
-        del(self.lista_d[pos].organos[poso])
-        if len(self.lista_d[pos].organos) == 0:
-            del (self.lista_d[pos])
-        self.procedimiento.clear()
-        #retocar
+        for i in self.lista_d:
+            if i.DNI == self.procedimiento[1]:
+                posd = i
+                break
+        for i in self.lista_d[posd].organos:
+            if i == self.procedimiento[2]:
+                pos_org = i
+
+        del(self.lista_d[posd].organos[pos_org])
+        if len(self.lista_d[posd].organos) == 0:
+            del (self.lista_d[posd])
+        self.procedimiento.clear() 
+        #posicion del centro en la lista de centros del donante, entonces entro al centro y busco el cirujano
+        # 
+        #posicion del organo en el array de donantes y borrarlo
+        #posicion del organo en el array de organos de ese donante
 
         return
