@@ -8,20 +8,22 @@ from paciente import PACIENTE
 from organo import ORGANOS
 
 def main():
+    
     incucai = INCUCAI()
-    centro = CENTRO()
     i=0
     while i == 0:
-            print("\nMenú:")
+            
+            print("\n Menú:")
             print("1. Registrar paciente")
             print("2. Registrar centro de salud")
             print("3. Registrar vehiculo")
             print("4. Registrar cirujano")
-            print("5. Inicializar programa")
+            print("5. Inicializar programa") #preguntar el sentido de esto.
             print("0. Salir")
             eleccion = input("Elige una opción:")
-            
-            if (eleccion == 1):
+
+            if (eleccion == "1"):
+
                 nombre = str(input('Ingrese el nombre del paciente: '))
                 dni = int(input('Ingrese el DNI del paciente: '))
                 nacimiento = str(input('Ingrese la fecha de nacimiento del paciente (Ejemplo: 1990-05-12): ')) #que hacemos si lo ingresan en otro formato
@@ -29,9 +31,11 @@ def main():
                 telefono = str(input('Ingrese el telefono del paciente (Ejemplo: 1123456789): '))
                 sangre = str(input('Ingrese el tipo de sangre del paciente (Ejemplo: O+): '))
                 centro = str(input('Ingrese nombre del centro al que pertenece el paciente: '))
+                
                 aux = incucai.buscar_centro(centro)
                 if aux == False:
-                    print("EL centro no se encuentra registrado aun")
+                    print("El centro no se encuentra registrado aun")
+
                 else:
                     l = 0
                     while l == 0:
@@ -41,6 +45,7 @@ def main():
                         opcion = str(input('Ingrese su respuesta: '))
                         if opcion == '1':
                             k = 0
+                            org = []
                             while k == 0:
                                 print('Seleccione que organos tiene disponibles para donar el paciente:')
                                 print('1. Corazon')
@@ -54,7 +59,7 @@ def main():
                                 print('9. Pancreas')
                                 print('0. Ya he ingresado todos los organos')
                                 opcion_org = str(input('Ingrese su respuesta: '))
-                                org = []
+
                                 if opcion_org == '1':
                                     org.append('Corazon')
                                 if opcion_org == '2':
@@ -76,7 +81,9 @@ def main():
                                 else:
                                     k=1
                             donante = DONANTE(nombre, dni, nacimiento, sexo, telefono, sangre, centro, org)
-                            incucai.registrar_paciente(donante)
+                            aux1 = incucai.registrar_paciente(donante)
+                            if (aux1 == True):
+                                incucai.match_inmediato(donante)
                             l=1
                         elif opcion == '2':
                             espera = int(input('Ingrese la fecha de espera del paciente (si la fecha es 25/04/2025 ingrese 20250425): '))
@@ -120,16 +127,18 @@ def main():
                         else: 
                             print('No se reconocio su respuesta.')
 
-                pass #menu para registrar pacientes
-            elif (eleccion == 2):
+            elif (eleccion == "2"):
+
                 nombre = str(input('Ingrese el nombre del centro: '))
                 direccion = str(input('Ingrese la direccion del centro (Ejemplo: "Av. de la Salud 1234, Ciudad Central"): '))
                 partido = str(input('Ingrese el partido al que pertenece el centro: '))
                 provincia = str(input('Ingrese la provincia a la que pertenece el centro: '))
                 centro = CENTRO(nombre, direccion, partido, provincia)
                 incucai.registrar_centro(centro)
-                return #menu para registrar centros de salud
-            elif (eleccion == 3):
+                #menu para registrar centros de salud
+            
+            elif (eleccion == "3"):
+                centro = CENTRO()
                 l = 0
                 while l == 0:
                     print('Ingrese que tipo de vehiculo desea registrar: ')
@@ -137,36 +146,55 @@ def main():
                     print('2. Helicoptero')
                     print('3. Avion')
                     opcion = str(input('Ingrese su respuesta: '))
+
                     if opcion == ('1' or '2' or '3'):
                         patente = str(input('Ingrese la patente del vehiculo: '))
                         velocidad = str(input('Ingrese la velocidad maxima del vehiculo: '))
                         centro = str(input('Ingrese el nombre del centro al que pertenece el vehiculo:'))
+                        
                         aux = incucai.buscar_centro(centro)
                         if aux == False:
-                            print("EL centro no se encuentra registrado aun")
-                        else:
+                            print("El centro no se encuentra registrado aun")
+
+                        else:  
                             if opcion == '1':
                                 vehiculo = VEHICULO('Ambulancia', velocidad, patente, centro)
+
                             elif opcion == '2':
                                 vehiculo = VEHICULO('Helicoptero', velocidad, patente, centro)
+
                             else: 
                                 vehiculo = VEHICULO('Avion', velocidad, patente, centro)
-                            incucai.lista_c[aux].registrar_vehiculo(vehiculo)
+
+                            for i in incucai.lista_c:
+                                if i == incucai.lista_c[aux]:
+                                    centro.registrar_vehiculo(vehiculo)
+
                     else:
                         print('No se reconocio su respuesta.')
-                return #menu para registrar vehiculos
-            elif (eleccion == 4):
-                matricula = str(input('Ingrese el numero de matricula del cirujano: '))
-                especialidad = str(input())
-                centro = str(input('Ingrese nombre del centro donde trabaja el cirujano: '))
+
+                 #menu para registrar vehiculos
+            
+            elif (eleccion == "4"):
+                centro = CENTRO()
+                matricula = str(input('Ingrese el numero de matricula del cirujano:'))
+                especialidad = str(input("Ingrese la especialidad del cirujano:"))
+                centro = str(input('Ingrese nombre del centro donde trabaja el cirujano:'))
+                
                 aux = incucai.buscar_centro(centro)
                 if aux == False:
-                    print("EL centro no se encuentra registrado aun")
+                    print("El centro no se encuentra registrado aun.")
                 else:
                     cirujano = CIRUJANO(matricula, especialidad, centro)
-                    incucai.lista_c[aux].registrar_cirujano(cirujano)
-                return #menu para registrar cirujanos
-            elif (eleccion == 5):
+                    for i in incucai.lista_c:
+                        if i == incucai.lista_c[aux]:
+                            centro.registrar_cirujano(cirujano)
+                            
+                 #menu para registrar cirujanos
+            
+            elif (eleccion == "5"):                
+                centro = CENTRO()
+
                 paciente1 = DONANTE(
                 nombre="Valentin Perez",
                 DNI=46962303,
@@ -177,6 +205,7 @@ def main():
                 centro_de_salud="Hospital Central",
                 organos= ["Riñon","Piel","Intestino"]) 
                 incucai.registrar_paciente(paciente1) 
+
                 paciente2 = RECEPTOR(
                 nombre="Lucia Gómez",
                 DNI=21836338,
@@ -187,21 +216,10 @@ def main():
                 centro_de_salud="Hospital Norte",
                 organo="Riñon",
                 espera=20250425,
-                prioridad="Medio", 
-                patologia = "insuficiencia renal",
-                estado = "estable")
+                prioridad="Medio")
                 incucai.registrar_paciente(paciente2) 
-                paciente = DONANTE(
-                nombre="Valentin Perez",
-                DNI=46962303,
-                nacimiento="1990-05-12",
-                sexo="M",
-                telefono="1123456789",
-                tipo_de_sangre="O+",
-                centro_de_salud="Hospital Central",
-                organos= ["Riñon","Piel","Intestino"]) 
-                incucai.registrar_paciente(paciente1) 
-                # Registrar 60 pacientes 
+
+            #####
 
                 hospital_central = CENTRO(
                 nombre="Hospital Central",
@@ -215,7 +233,6 @@ def main():
                 partido="Partido Norte",
                 provincia="Buenos Aires")
                 incucai.registrar_centro(hospital_norte)
-                #Resgistrar 10 centros de salud
 
                 ambulancia = VEHICULO(
                     "Ambulancia", 'AC473FF', 100, "Hospital Central" 
@@ -244,13 +261,13 @@ def main():
                 cirujano6 = CIRUJANO(6, "Traumatologo", "Hospital Central")
                 centro.registrar_cirujano(cirujano6)
                 #registrar 30
-
+     
+            elif (eleccion == "0"):
                 return
-            elif (eleccion == 0):
-                break
+            
             else:
                 print("No se registro su respuesta, porfavor reingrese nuevamente una opcion.")
-                return
+    
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()

@@ -1,5 +1,3 @@
-from viajes import VIAJES
-
 class VEHICULO :
     def __init__(self, tipo: str, velocidad: int, patente: str, centro: str):
         self.tipo = tipo 

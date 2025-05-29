@@ -19,10 +19,15 @@ class INCUCAI:
         self.lista_d = []
 
     def buscar_centro(self, nombre: str):
-        for i in self.lista_c:
-            if i.nombre == nombre:
-                return i
-        return False
+        cont = 0
+        for i in range(len(self.lista_c)):
+            if self.lista_c[i].nombre == nombre:
+                cont += 1  
+        if cont == 0:
+            return False  
+        else:
+            return True
+
 
     def registrar_paciente(self, paciente:RECEPTOR|DONANTE): 
         
@@ -42,12 +47,13 @@ class INCUCAI:
                 self.lista_d.append(paciente)
             if type(paciente) == RECEPTOR: 
                 self.lista_r.append(paciente)
-            else:
-                print('No se ha podido registrar al paciente, intente nuevamente.')
-                return
+            print("Se ha registrado al paciente exitosamente.")
+            return True
+        else:
+            print('No se ha podido registrar al paciente, intente nuevamente.')
+            return
 
-        print("Se ha registrado al paciente exitosamente.")
-        INCUCAI.match(paciente)
+       
 
     def registrar_centro(self, centro: CENTRO):
         cont = 0
@@ -62,6 +68,7 @@ class INCUCAI:
                 print("Se ha registrado el centro.")
         else: 
             print("No se ha podido registrar el centro, intente nuevamente.")
+
         return
 
     def match_inmediato(self, paciente: DONANTE):
@@ -105,7 +112,7 @@ class INCUCAI:
                         pos1=i
                     
         if (pos4 != -1):
-            self.procedimiento.append(self.lista_r[pos].DNI)
+            self.procedimiento.append(self.lista_r[pos4].DNI)
             self.procedimiento.append(paciente.DNI)
             self.transporte(paciente, pos4)
             aux = self.transporte()
@@ -376,6 +383,7 @@ class INCUCAI:
         for i in self.lista_d[posd].organos:
             if i == self.procedimiento[2]:
                 pos_org = i
+                break
 
         del(self.lista_d[posd].organos[pos_org])
         if len(self.lista_d[posd].organos) == 0:

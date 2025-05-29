@@ -1,10 +1,5 @@
-from paciente import PACIENTE
-from receptor import RECEPTOR
-from donante import DONANTE
-from INCUCAI import INCUCAI
 from vehiculo import VEHICULO
 from cirujano import CIRUJANO
-
 
 class CENTRO:
 
@@ -24,7 +19,7 @@ class CENTRO:
                 cont += 1
                 break
         if (cont == 0):
-            self.vehiculo.append(vehiculo)
+            self.vehiculos.append(vehiculo)
             print("El vehiculo se ha registrado con exito.")
 
     def registrar_cirujano(self, cirujano: CIRUJANO):
