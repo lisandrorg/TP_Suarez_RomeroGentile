@@ -19,6 +19,7 @@ def main():
             print("3. Registrar vehiculo")
             print("4. Registrar cirujano")
             print("5. Inicializar programa") #preguntar el sentido de esto.
+            print("6. Imprimir lista de pacientes registrados") #hay que hacerla con lo del metodo magico
             print("0. Salir")
             eleccion = input("Elige una opción:")
 
@@ -80,14 +81,19 @@ def main():
                                     org.append('Pancreas')
                                 else:
                                     k=1
+                            org = set(org) #esta funcion hace que se borren los elementos repetido
                             donante = DONANTE(nombre, dni, nacimiento, sexo, telefono, sangre, centro, org)
-                            aux1 = incucai.registrar_paciente(donante)
-                            if (aux1 == True):
-                                incucai.match_inmediato(donante)
+                            incucai.registrar_paciente(donante)
                             l=1
                         elif opcion == '2':
-                            espera = int(input('Ingrese la fecha de espera del paciente (si la fecha es 25/04/2025 ingrese 20250425): '))
-                            prioridad = int(input('Ingrese la prioridad del paciente: '))
+                            espera = int(input('Ingrese la fecha de espera del paciente (si la fecha es 25/04/2025 ingrese 20250425): ')) #verificar como podemos hacer que se respete el formato
+                            k=0
+                            while k == 0:
+                                prioridad = int(input('Ingrese la prioridad del paciente (1,2 o 3): '))
+                                if prioridad != (1 or 2 or 3):
+                                    print('No se registro su respuesta')
+                                else:
+                                    k=1
                             print('Ingrese cual es el organo que necesita recibir el paciente: ')
                             k=0
                             while k==0:
@@ -149,31 +155,27 @@ def main():
 
                     if opcion == ('1' or '2' or '3'):
                         patente = str(input('Ingrese la patente del vehiculo: '))
-                        velocidad = str(input('Ingrese la velocidad maxima del vehiculo: '))
+                        velocidad = int(input('Ingrese la velocidad maxima del vehiculo: '))
                         centro = str(input('Ingrese el nombre del centro al que pertenece el vehiculo:'))
                         
                         aux = incucai.buscar_centro(centro)
                         if aux == False:
                             print("El centro no se encuentra registrado aun")
-
+                            l=1
                         else:  
                             if opcion == '1':
                                 vehiculo = VEHICULO('Ambulancia', velocidad, patente, centro)
-
+                                incucai.lista_c[aux].registrar_vehiculos(vehiculo)
                             elif opcion == '2':
                                 vehiculo = VEHICULO('Helicoptero', velocidad, patente, centro)
-
+                                incucai.lista_c[aux].registrar_vehiculos(vehiculo)
                             else: 
                                 vehiculo = VEHICULO('Avion', velocidad, patente, centro)
-
-                            for i in incucai.lista_c:
-                                if i == incucai.lista_c[aux]:
-                                    centro.registrar_vehiculo(vehiculo)
-
+                                incucai.lista_c[aux].registrar_vehiculos(vehiculo)
                     else:
                         print('No se reconocio su respuesta.')
 
-                 #menu para registrar vehiculos
+                #menu para registrar vehiculos
             
             elif (eleccion == "4"):
                 centro = CENTRO()
@@ -193,18 +195,46 @@ def main():
                  #menu para registrar cirujanos
             
             elif (eleccion == "5"):                
-                centro = CENTRO()
+                hospital_central = CENTRO(
+                nombre="Hospital Central",
+                direccion="Av. de la Salud 1234, Ciudad Central",
+                partido="Partido Central",
+                provincia="Buenos Aires")
+                incucai.registrar_centro(hospital_central)
+                hospital_norte = CENTRO(
+                nombre="Hospital Norte",
+                direccion="Av. de la Salud 5678, Ciudad Norte",
+                partido="Partido Norte",
+                provincia="Buenos Aires")
+                incucai.registrar_centro(hospital_norte)
 
-                paciente1 = DONANTE(
-                nombre="Valentin Perez",
-                DNI=46962303,
-                nacimiento="1990-05-12",
-                sexo="M",
-                telefono="1123456789",
-                tipo_de_sangre="O+",
-                centro_de_salud="Hospital Central",
-                organos= ["Riñon","Piel","Intestino"]) 
-                incucai.registrar_paciente(paciente1) 
+                cirujano1 = CIRUJANO( 1, 'General',"Hospital Norte" )
+                incucai.lista_c[1].registrar_cirujano(cirujano1)
+                cirujano2 = CIRUJANO(2, "Gastroenterologo", "Hospital Central")
+                incucai.lista_c[0].registrar_cirujano(cirujano2)
+                cirujano3 = CIRUJANO( 3,"Plastico", "Hospital Norte")
+                incucai.lista_c[1].registrar_cirujano(cirujano3)
+                cirujano4 = CIRUJANO(4,"Pulmonar", "Hospital Central")
+                incucai.lista_c[0].registrar_cirujano(cirujano4)
+                cirujano5 = CIRUJANO(5, "Cardiovascular", "Hospital Norte")
+                incucai.lista_c[1].registrar_cirujano(cirujano5)
+                cirujano6 = CIRUJANO(6, "Traumatologo", "Hospital Central")
+                incucai.lista_c[0].registrar_cirujano(cirujano6)
+                #registrar 30
+
+                ambulancia = VEHICULO(
+                    "Ambulancia", 'AC473FF', 100, "Hospital Central" 
+                )
+                incucai.lista_c[0].registrar_vehiculo(ambulancia)
+                helicoptero = VEHICULO(
+                    "Helicoptero", 'KLI994', 250, "Hospital Norte"
+                )
+                incucai.lista_c[1].registrar_vehiculo(helicoptero)
+                avion = VEHICULO(
+                    "Avion", 'AA088OM', 400, "Hospital Central"
+                )
+                incucai.lista_c[0].registrar_vehiculo(avion)
+                #registrar uno de cada para cada centro
 
                 paciente2 = RECEPTOR(
                 nombre="Lucia Gómez",
@@ -219,49 +249,18 @@ def main():
                 prioridad="Medio")
                 incucai.registrar_paciente(paciente2) 
 
-            #####
 
-                hospital_central = CENTRO(
-                nombre="Hospital Central",
-                direccion="Av. de la Salud 1234, Ciudad Central",
-                partido="Partido Central",
-                provincia="Buenos Aires")
-                incucai.registrar_centro(hospital_central)
-                hospital_norte = CENTRO(
-                nombre="Hospital Norte",
-                direccion="Av. de la Salud 5678, Ciudad Norte",
-                partido="Partido Norte",
-                provincia="Buenos Aires")
-                incucai.registrar_centro(hospital_norte)
-
-                ambulancia = VEHICULO(
-                    "Ambulancia", 'AC473FF', 100, "Hospital Central" 
-                )
-                centro.registrar_vehiculo(ambulancia)
-                helicoptero = VEHICULO(
-                    "Helicoptero", 'KLI994', 250, "Hospital Norte"
-                )
-                centro.registrar_vehiculo(helicoptero)
-                avion = VEHICULO(
-                    "Avion", 'AA088OM', 400, "Hospital Central"
-                )
-                centro.registrar_vehiculo(avion)
-                #registrar uno de cada para cada centro
-
-                cirujano1 = CIRUJANO( 1, 'General',"Hospital Norte" )
-                centro.registrar_cirujano(cirujano1)
-                cirujano2 = CIRUJANO(2, "Gastroenterologo", "Hospital Central")
-                centro.registrar_cirujano(cirujano2)
-                cirujano3 = CIRUJANO( 3,"Plastico", "Hospital Norte")
-                centro.registrar_cirujano(cirujano3)
-                cirujano4 = CIRUJANO(4,"Pulmonar", "Hospital Central")
-                centro.registrar_cirujano(cirujano4)
-                cirujano5 = CIRUJANO(5, "Cardiovascular", "Hospital Norte")
-                centro.registrar_cirujano(cirujano5)
-                cirujano6 = CIRUJANO(6, "Traumatologo", "Hospital Central")
-                centro.registrar_cirujano(cirujano6)
-                #registrar 30
-     
+                paciente1 = DONANTE(
+                nombre="Valentin Perez",
+                DNI=46962303,
+                nacimiento="1990-05-12",
+                sexo="M",
+                telefono="1123456789",
+                tipo_de_sangre="O+",
+                centro_de_salud="Hospital Central",
+                organos= ["Riñon","Piel","Intestino"]) 
+                incucai.registrar_paciente(paciente1) 
+    
             elif (eleccion == "0"):
                 return
             

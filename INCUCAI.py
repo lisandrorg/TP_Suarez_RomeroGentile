@@ -18,42 +18,39 @@ class INCUCAI:
         self.lista_r = []
         self.lista_d = []
 
-    def buscar_centro(self, nombre: str):
-        cont = 0
+    def buscar_centro(self, nombre: str): #busco posicion de centro, si no esta registrado devuelvo false, si esta registrado devuelvo su posicion en el array de centros registrados
         for i in range(len(self.lista_c)):
             if self.lista_c[i].nombre == nombre:
-                cont += 1  
-        if cont == 0:
-            return False  
-        else:
-            return True
-
+                return i 
+        return False  
 
     def registrar_paciente(self, paciente:RECEPTOR|DONANTE): 
-        
-        cont = 0
-        for i in self.lista_d + self.lista_r: 
+        for i in self.lista_d + self.lista_r: #verifico que el paciente no este registrado ya
             if(i.DNI == paciente.DNI or i.DNI == paciente.DNI):
                 print("El paciente con DNI:", paciente.DNI ,"ya se encuentra registrado.")
-                cont += 1
+                return
 
-        for i in self.lista_c:
-            if(i.nombre != paciente.centro_de_salud):
-                print("el paciente con DNI:", paciente.DNI, "no tiene un centro de salud asociado.")
+        cont = 0
+        for i in self.lista_c:   #verifico que el centro del paciente este registrado
+            if(i.nombre == paciente.centro_de_salud):
                 cont +=1
-
+                break
         if cont == 0:
-            if type(paciente) == DONANTE: 
-                self.lista_d.append(paciente)
-            if type(paciente) == RECEPTOR: 
-                self.lista_r.append(paciente)
-            print("Se ha registrado al paciente exitosamente.")
-            return True
-        else:
-            print('No se ha podido registrar al paciente, intente nuevamente.')
+            print("El paciente con DNI:", paciente.DNI, "pertenece a un centro de salud no registrado.")
             return
 
-       
+        if type(paciente) == DONANTE: #si es donante guardo en lista de donantes y busco match 
+            self.lista_d.append(paciente)
+            print("Se ha registrado al paciente exitosamente.")
+            INCUCAI.match_inmediato(paciente)
+            return True
+        if type(paciente) == RECEPTOR: #si es receptor guardo en lista de receptor y vuelvo al menu
+            self.lista_r.append(paciente)
+            print("Se ha registrado al paciente exitosamente.")
+            return True
+        else: #si no es un objeto del tipo receptor o donante, entonces no guardo, muestro un mensaje y vuelvo al menu
+            print('No se ha podido registrar al paciente, intente nuevamente.')
+            return
 
     def registrar_centro(self, centro: CENTRO):
         cont = 0
@@ -61,24 +58,20 @@ class INCUCAI:
             for i in self.lista_c: 
                 if(i.nombre == centro.nombre):
                     print("El centro:", centro.nombre ,"ya se encuentra registrado.")
-                    cont += 1
-            
-            if cont == 0:
-                self.lista_c.append(centro)
-                print("Se ha registrado el centro.")
+                    return
+            self.lista_c.append(centro)
+            print("Se ha registrado el centro.")
         else: 
             print("No se ha podido registrar el centro, intente nuevamente.")
-
         return
 
     def match_inmediato(self, paciente: DONANTE):
-        
         pos4, pos3, pos2, pos1 = -1, -1, -1, -1
-        for k in paciente.organos:
-            if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1:
+        for k in paciente.organos: #recibo un objeto donante e inmediatamente recorro su lista de organos disponibles
+            if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1: #en caso de detectar cambios significaria que se a encontrado algun posible receptor 
                 break
             for i in self.lista_r:
-                if (i.prioridad==4 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre):
+                if (i.prioridad==4 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre): #condiciones necesarias, tengo en cuenta que receptor lleva mas tiempo de espera para priorizarlo
                     espera = i.espera 
                     if i==0:
                         fmin4=espera
@@ -111,11 +104,11 @@ class INCUCAI:
                         fmin1=espera 
                         pos1=i
                     
-        if (pos4 != -1):
+        if (pos4 != -1): #verifico que si encontro un receptor de mayor prioridad y unicamente hago su match antes de volver al menu
             self.procedimiento.append(self.lista_r[pos4].DNI)
             self.procedimiento.append(paciente.DNI)
-            self.transporte(paciente, pos4)
-            aux = self.transporte()
+            self.procedimiento.append(self.lista_r[pos4].organo)
+            aux = self.transporte(pos4)
             if(aux): 
                 return
             tiempo=self.viaje()
@@ -124,8 +117,8 @@ class INCUCAI:
         elif (pos4 == -1 and pos3 != -1):
             self.procedimiento.append(self.lista_r[pos3].DNI)
             self.procedimiento.append(paciente.DNI)
-            self.transporte(paciente, pos3)
-            aux = self.transporte()
+            self.procedimiento.append(self.lista_r[pos3].organo)
+            aux = self.transporte(pos3)
             if(aux): 
                 return
             tiempo=self.viaje()
@@ -134,8 +127,8 @@ class INCUCAI:
         elif (pos4 == -1 and pos3 == -1 and pos2 != -1):
             self.procedimiento.append(self.lista_r[pos2].DNI)
             self.procedimiento.append(paciente.DNI)
-            self.transporte(paciente, pos2)
-            aux = self.transporte()
+            self.procedimiento.append(self.lista_r[pos2].organo)
+            aux = self.transporte(pos2)
             if(aux): 
                 return
             tiempo=self.viaje()
@@ -144,8 +137,8 @@ class INCUCAI:
         elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 != -1):
             self.procedimiento.append(self.lista_r[pos1].DNI)
             self.procedimiento.append(paciente.DNI)
-            self.transporte(paciente, pos1)
-            aux = self.transporte()
+            self.procedimiento.append(self.lista_r[pos1].organo)
+            aux = self.transporte(pos1)
             if(aux): 
                 return
             tiempo=self.viaje()
@@ -158,15 +151,15 @@ class INCUCAI:
 
     def match_general(self):
         cont, pos4, pos3, pos2, pos1 = 0, -1, -1, -1, -1
-        for d in self.lista_d:
-            if cont != 0:
+        for d in self.lista_d: #recorro array de donantes
+            if cont != 0: #si detecto cambios guardo posicion del donante y salgo del bucle
                 posd = d
                 break
-            for k in d.organos:
-                if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1:
+            for k in d.organos: #recorro cada organo del donante
+                if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1: #si detecto cambios, aumento el contador y vuelvo al for anterior
                     cont +=1
                     break
-                for i in self.lista_r:
+                for i in self.lista_r: #busco un posible receptor
                     if (i.prioridad==4 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre):
                         espera = i.espera 
                         if i==0:
@@ -203,7 +196,8 @@ class INCUCAI:
             if (pos4 != -1):
                 self.procedimiento.append(self.lista_r[pos4].DNI)
                 self.procedimiento.append(self.lista_d[posd].DNI)
-                self.transporte(d, pos4)
+                self.procedimiento.append(self.lista_r[pos4].organo)
+                self.transporte(pos4)
                 aux = self.transporte()
                 if(aux == True): 
                     return
@@ -213,8 +207,8 @@ class INCUCAI:
             elif (pos4 == -1 and pos3 != -1):
                 self.procedimiento.append(self.lista_r[pos3].DNI)
                 self.procedimiento.append(self.lista_d[posd].DNI)
-                self.transporte(d, pos3)
-                aux = self.transporte()
+                self.procedimiento.append(self.lista_r[pos3].organo)
+                aux = self.transporte(pos3)
                 if(aux == True): 
                     return
                 tiempo=self.viaje()
@@ -223,8 +217,8 @@ class INCUCAI:
             elif (pos4 == -1 and pos3 == -1 and pos2 != -1):
                 self.procedimiento.append(self.lista_r[pos2].DNI)
                 self.procedimiento.append(self.lista_d[posd].DNI)
-                self.transporte(d, pos2)
-                aux = self.transporte()
+                self.procedimiento.append(self.lista_r[pos2].organo)
+                aux = self.transporte(pos2)
                 if(aux == True): 
                     return
                 tiempo=self.viaje()
@@ -233,8 +227,8 @@ class INCUCAI:
             elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 != -1):
                 self.procedimiento.append(self.lista_r[pos1].DNI)
                 self.procedimiento.append(self.lista_d[posd].DNI)
-                self.transporte(d, pos1)
-                aux = self.transporte()
+                self.procedimiento.append(self.lista_r[pos1].organo)
+                aux = self.transporte(pos1)
                 if(aux == True): 
                     return
                 tiempo=self.viaje()
@@ -244,16 +238,20 @@ class INCUCAI:
                 print('No se ha encontrado una coincidencia')
         return                  
 
-    def transporte(self, paciente: DONANTE, posicion: int):
+    def transporte(self, posicion: int):
 
-        p_centro_donante = p_centro_receptor = - 1
+        for i in self.lista_d:
+            if i.DNI == self.procedimiento[2]:
+                d=i
+                break
+        p_centro_donante = INCUCAI.buscar_centro(self.lista_d[d].centro_de_salud)
+        p_centro_receptor = INCUCAI.buscar_centro(self.lista_r[posicion].centro_de_salud)
         condicion1 = (self.lista_c[p_centro_donante].provincia != self.lista_c[p_centro_receptor].provincia)
         condicion2 =(self.lista_c[p_centro_donante].partido != self.lista_c[p_centro_receptor].partido)
         cond_avion = (i.tipo == "Avion" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1)
         cond_helicoptero = (i.tipo == "Helicoptero" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1)
         cond_ambulancia = (i.tipo == "Ambulancia" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1)
         contv=0
-
         if (condicion1==True):
             for i in self.lista_c[p_centro_donante].vehiculos:
                 if(cond_avion == True):
@@ -321,7 +319,6 @@ class INCUCAI:
                 print("no se ha podido encontrar un doctor disponible")
                 self.procedimiento.clear()
                 return True
-               
         return 
 
     def viaje(self):
