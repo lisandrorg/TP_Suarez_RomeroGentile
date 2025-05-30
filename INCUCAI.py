@@ -18,7 +18,7 @@ class INCUCAI:
         self.lista_r = []
         self.lista_d = []
 
-    def buscar_centro(self, nombre: str): #busco posicion de centro, si no esta registrado devuelvo false, si esta registrado devuelvo su posicion en el array de centros registrados
+    def buscar_centro(self, nombre: str): #busco posicion de centro, si no esta registrado devuelvo -1, si esta registrado devuelvo su posicion en el array de centros registrados
         for i in range(len(self.lista_c)):
             if self.lista_c[i].nombre == nombre:
                 return i 

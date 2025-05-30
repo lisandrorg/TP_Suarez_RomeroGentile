@@ -145,23 +145,23 @@ def main():
                                 else:
                                     k=1
                                     if org == '1':
-                                        paciente = RECEPTOR(nombre, dni, nacimiento, sexo, telefono, sangre, centro, 'Corazon', espera, prioridad)
+                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Corazon', espera, prioridad)
                                     elif org == '2':
-                                        paciente = RECEPTOR(nombre, dni, nacimiento, sexo, telefono, sangre, centro, 'Pulmon', espera, prioridad)
+                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Pulmon', espera, prioridad)
                                     elif org == '3':
-                                        paciente = RECEPTOR(nombre, dni, nacimiento, sexo, telefono, sangre, centro, 'Piel', espera, prioridad)
+                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Piel', espera, prioridad)
                                     elif org == '4':
-                                        paciente = RECEPTOR(nombre, dni, nacimiento, sexo, telefono, sangre, centro, 'Cornea', espera, prioridad)
+                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Cornea', espera, prioridad)
                                     elif org == '5':
-                                        paciente = RECEPTOR(nombre, dni, nacimiento, sexo, telefono, sangre, centro, 'Riñon', espera, prioridad)
+                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Riñon', espera, prioridad)
                                     elif org == '6':
-                                        paciente = RECEPTOR(nombre, dni, nacimiento, sexo, telefono, sangre, centro, 'Higado', espera, prioridad)
+                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Higado', espera, prioridad)
                                     elif org == '7':
-                                        paciente = RECEPTOR(nombre, dni, nacimiento, sexo, telefono, sangre, centro, 'Huesos', espera, prioridad)
+                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Huesos', espera, prioridad)
                                     elif org == '8':
-                                        paciente = RECEPTOR(nombre, dni, nacimiento, sexo, telefono, sangre, centro, 'Intestino', espera, prioridad)
+                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Intestino', espera, prioridad)
                                     elif org == '9':
-                                        paciente = RECEPTOR(nombre, dni, nacimiento, sexo, telefono, sangre, centro, 'Pancreas', espera, prioridad)
+                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Pancreas', espera, prioridad)
                                     incucai.registrar_paciente(paciente)
                         else: 
                             print('No se reconocio su respuesta.')
@@ -224,7 +224,7 @@ def main():
                         if i == incucai.lista_c[aux]:
                             centro.registrar_cirujano(cirujano)
                             
-                 #menu para registrar cirujanos
+                #menu para registrar cirujanos
             
             elif (eleccion == "5"):                
                 hospital_central = CENTRO(
