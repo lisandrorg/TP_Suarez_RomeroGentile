@@ -24,17 +24,46 @@ def main():
             eleccion = input("Elige una opción:")
 
             if (eleccion == "1"):
+                try:
+                    DNI = int(input("Ingrese el DNI de su paciente: "))
+                except ValueError:
+                    print("Por favor, ingrese su DNI en el formato correcto.")
+                    continue
+                
+                nombre = input("Ingrese su nombre: ")
+                for i in nombre: # no andan nombres, verlo. 
+                    ascii_valor = ord(i) #se permiten dentro de nombre, cada i en maysc, minsc, y espacios.
+                    if not ((65 <= ascii_valor <= 90) or (97 <= ascii_valor <= 122) or ascii_valor == 32):
+                        print("Por favor ingrese su nombre en el formato correcto.")
+                        continue    
 
-                nombre = str(input('Ingrese el nombre del paciente: '))
-                dni = int(input('Ingrese el DNI del paciente: '))
-                nacimiento = str(input('Ingrese la fecha de nacimiento del paciente (Ejemplo: 1990-05-12): ')) #que hacemos si lo ingresan en otro formato
-                sexo = str(input('Ingrese el sexo del paciente: '))
-                telefono = str(input('Ingrese el telefono del paciente (Ejemplo: 1123456789): '))
-                sangre = str(input('Ingrese el tipo de sangre del paciente (Ejemplo: O+): '))
-                centro = str(input('Ingrese nombre del centro al que pertenece el paciente: '))
+                try:
+                    nacimiento = int(input('Ingrese la fecha de nacimiento del paciente (Ejemplo: 17052025, si nacio el 17/05/2025): '))
+                except ValueError:
+                    print("Por favor, ingrese su fecha de nacimiento en el formato correcto.")
+                    continue                
+                
+                sexo = str(input("Ingrese el sexo de su paciente(M/F): "))
+                if sexo != "M" and sexo != "F":
+                    print("Por favor, ingrese su sexo en el formato correcto.")
+                    continue
+
+
+                try:
+                    telefono = int(input('Ingrese el telefono del paciente, sin el codigo de area (Ejemplo: 1123456789): '))
+                except ValueError:
+                    print("Por favor ingrese su telefono en el formato correcto.")
+                    continue
+                
+                sangre = str(input('Ingrese el tipo de sangre del paciente, en mayusculas (Ejemplo: O+): '))
+                if sangre != "A+" and sangre != "A-" and sangre != "B+" and sangre != "B-" and sangre != "O+" and sangre != "O-" and sangre != "AB+" and sangre != "AB-":
+                    print("Por favor, ingrese su tipo de sangre en el formato correcto.")
+                    continue
+
+                centro = str(input('Ingrese nombre del centro al que pertenece el paciente: ')) #imposible de verificar
                 
                 aux = incucai.buscar_centro(centro)
-                if aux == False:
+                if aux == -1:
                     print("El centro no se encuentra registrado aun")
 
                 else:
@@ -59,34 +88,38 @@ def main():
                                 print('8. Intestino')
                                 print('9. Pancreas')
                                 print('0. Ya he ingresado todos los organos')
-                                opcion_org = str(input('Ingrese su respuesta: '))
+                                opcion_org = int(input('Ingrese su respuesta: '))
 
-                                if opcion_org == '1':
+                                if opcion_org == 1:
                                     org.append('Corazon')
-                                if opcion_org == '2':
+                                elif opcion_org == 2:
                                     org.append('Pulmon')
-                                if opcion_org == '3':
+                                elif opcion_org == 3:
                                     org.append('Piel')
-                                if opcion_org == '4':
+                                elif opcion_org == 4:
                                     org.append('Cornea')
-                                if opcion_org == '5':
+                                elif opcion_org == 5:
                                     org.append('Riñon')
-                                if opcion_org == '6':
+                                elif opcion_org == 6:
                                     org.append('Higado')
-                                if opcion_org == '7':
-                                    org.append('HUesos')
-                                if opcion_org == '8':
+                                elif opcion_org == 7:
+                                    org.append('Huesos')
+                                elif opcion_org == 8:
                                     org.append('Intestino')
-                                if opcion_org == '9':
+                                elif opcion_org == 9:
                                     org.append('Pancreas')
-                                else:
-                                    k=1
-                            org = set(org) #esta funcion hace que se borren los elementos repetido
-                            donante = DONANTE(nombre, dni, nacimiento, sexo, telefono, sangre, centro, org)
-                            incucai.registrar_paciente(donante)
-                            l=1
+                                elif opcion_org == 0:
+                                    org = set(org) #esta funcion hace que se borren los elementos repetido
+                                    donante = DONANTE(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, org)
+                                    incucai.registrar_paciente(donante)
+                                    k = l = 1
+                                else :
+                                    print("no se reconocio su respuesta.")
+                                    break
+
                         elif opcion == '2':
                             espera = int(input('Ingrese la fecha de espera del paciente (si la fecha es 25/04/2025 ingrese 20250425): ')) #verificar como podemos hacer que se respete el formato
+                            #con type int and len == 8
                             k=0
                             while k == 0:
                                 prioridad = int(input('Ingrese la prioridad del paciente (1,2 o 3): '))
@@ -161,7 +194,6 @@ def main():
                         aux = incucai.buscar_centro(centro)
                         if aux == False:
                             print("El centro no se encuentra registrado aun")
-                            l=1
                         else:  
                             if opcion == '1':
                                 vehiculo = VEHICULO('Ambulancia', velocidad, patente, centro)
@@ -234,6 +266,7 @@ def main():
                     "Avion", 'AA088OM', 400, "Hospital Central"
                 )
                 incucai.lista_c[0].registrar_vehiculo(avion)
+                #preguntar por que deberia haber 0,1,0,1, y no 0123345
                 #registrar uno de cada para cada centro
 
                 paciente2 = RECEPTOR(
