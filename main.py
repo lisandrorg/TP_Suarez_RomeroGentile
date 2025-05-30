@@ -31,8 +31,8 @@ def main():
                     continue
                 
                 nombre = input("Ingrese su nombre: ")
-                for i in nombre: # no andan nombres, verlo. 
-                    ascii_valor = ord(i) #se permiten dentro de nombre, cada i en maysc, minsc, y espacios.
+                for letra in nombre: # no andan nombres, verlo. 
+                    ascii_valor = ord(letra) #se permiten dentro de nombre, cada i en maysc, minsc, y espacios.
                     if not ((65 <= ascii_valor <= 90) or (97 <= ascii_valor <= 122) or ascii_valor == 32):
                         print("Por favor ingrese su nombre en el formato correcto.")
                         continue    
@@ -47,7 +47,6 @@ def main():
                 if sexo != "M" and sexo != "F":
                     print("Por favor, ingrese su sexo en el formato correcto.")
                     continue
-
 
                 try:
                     telefono = int(input('Ingrese el telefono del paciente, sin el codigo de area (Ejemplo: 1123456789): '))
@@ -139,30 +138,30 @@ def main():
                                 print('7. Huesos')
                                 print('8. Intestino')
                                 print('9. Pancreas')
-                                org = str(input('Ingrese su respuesta: '))
-                                if org != ('1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9'):
+                                org = int(input('Ingrese su respuesta: '))
+                                if (org != 1) and (org != 2) and (org != 3) and (org != 4) and (org != 5) and (org != 6) and (org != 7) and (org != 8) and (org != 9):
                                     print('No se reconocio su respuesta')
                                 else:
-                                    k=1
-                                    if org == '1':
-                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Corazon', espera, prioridad)
-                                    elif org == '2':
-                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Pulmon', espera, prioridad)
-                                    elif org == '3':
-                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Piel', espera, prioridad)
-                                    elif org == '4':
-                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Cornea', espera, prioridad)
-                                    elif org == '5':
-                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Riñon', espera, prioridad)
-                                    elif org == '6':
-                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Higado', espera, prioridad)
-                                    elif org == '7':
-                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Huesos', espera, prioridad)
-                                    elif org == '8':
-                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Intestino', espera, prioridad)
-                                    elif org == '9':
-                                        paciente = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Pancreas', espera, prioridad)
-                                    incucai.registrar_paciente(paciente)
+                                    k = l = 1
+                                    if org == 1:
+                                        receptor = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Corazon', espera, prioridad)
+                                    elif org == 2:
+                                        receptor = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Pulmon', espera, prioridad)
+                                    elif org == 3:
+                                        receptor = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Piel', espera, prioridad)
+                                    elif org == 4:
+                                        receptor = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Cornea', espera, prioridad)
+                                    elif org == 5:
+                                        receptor = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Riñon', espera, prioridad)
+                                    elif org == 6:
+                                        receptor = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Higado', espera, prioridad)
+                                    elif org == 7:
+                                        receptor = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Huesos', espera, prioridad)
+                                    elif org == 8:
+                                        receptor = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Intestino', espera, prioridad)
+                                    elif org == 9:
+                                        receptor  = RECEPTOR(nombre, DNI, nacimiento, sexo, telefono, sangre, centro, 'Pancreas', espera, prioridad)
+                                    incucai.registrar_paciente(receptor)
                         else: 
                             print('No se reconocio su respuesta.')
 
@@ -220,11 +219,11 @@ def main():
                     print("El centro no se encuentra registrado aun.")
                 else:
                     cirujano = CIRUJANO(matricula, especialidad, centro)
-                    for i in incucai.lista_c:
-                        if i == incucai.lista_c[aux]:
-                            centro.registrar_cirujano(cirujano)
+                    for j in incucai.lista_c:
+                        if j == incucai.lista_c[aux]:
+                            incucai.lista_c[aux].registrar_cirujano(cirujano)
                             
-                #menu para registrar cirujanos
+                 #menu para registrar cirujanos
             
             elif (eleccion == "5"):                
                 hospital_central = CENTRO(

@@ -45,13 +45,9 @@ class INCUCAI:
             self.lista_d.append(paciente)
             print("Se ha registrado al paciente exitosamente.")
             self.match_inmediato(paciente)
-            return 
-        
-        if type(paciente) == RECEPTOR: #si es receptor guardo en lista de receptor y vuelvo al menu
+        elif type(paciente) == RECEPTOR: #si es receptor guardo en lista de receptor y vuelvo al menu
             self.lista_r.append(paciente)
             print("Se ha registrado al paciente exitosamente.")
-            return
-        
         else: #si no es un objeto del tipo receptor o donante, entonces no guardo, muestro un mensaje y vuelvo al menu
             print('No se ha podido registrar al paciente, intente nuevamente.')
             return
@@ -75,36 +71,36 @@ class INCUCAI:
         for k in paciente.organos: #recibo un objeto donante e inmediatamente recorro su lista de organos disponibles
             if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1: #en caso de detectar cambios significaria que se a encontrado algun posible receptor 
                 break
-            for i in self.lista_r:
-                if (i.prioridad==4 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre): #condiciones necesarias, tengo en cuenta que receptor lleva mas tiempo de espera para priorizarlo
-                    espera = i.espera 
+            for i in range(len(self.lista_r)):
+                if (i.prioridad==4 and i.organo == k and i.tipo_de_sangre == paciente.tipo_de_sangre): #condiciones necesarias, tengo en cuenta que receptor lleva mas tiempo de espera para priorizarlo
+                    espera = self.lista_r[i].espera 
                     if i==0:
                         fmin4=espera
                         pos4=i
                     elif (espera < fmin4):
                         fmin4=espera
                         pos4=i
-                if (i.prioridad==3 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre):
-                    espera = i.espera 
+                elif (i.prioridad==3 and i.organo == k and i.tipo_de_sangre == paciente.tipo_de_sangre):
+                    espera = self.lista_r[i].espera
                     if i==0:
                         fmin3=espera
                         pos3=i
                     elif (espera < fmin3):
                         fmin3=espera
                         pos3=i
-                elif (i.prioridad==2 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre):
-                    espera = i.espera 
+                elif (i.prioridad==2 and i.organo == k and i.tipo_de_sangre == paciente.tipo_de_sangre):
+                    espera = self.lista_r[i].espera
                     if i==0:
-                        fmin3=espera
-                        pos3=i
+                        fmin2=espera
+                        pos2=i
                     elif(espera < fmin2):
                         fmin2=espera 
                         pos2=i
-                elif (i.prioridad==1 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre):
-                    espera = i.espera 
+                elif (i.prioridad==1 and i.organo == k and i.tipo_de_sangre == paciente.tipo_de_sangre):
+                    espera = self.lista_r[i].espera
                     if i==0:
-                        fmin3=espera
-                        pos3=i
+                        fmin1=espera
+                        pos1=i
                     elif(espera < fmin1):
                         fmin1=espera 
                         pos1=i
@@ -156,18 +152,18 @@ class INCUCAI:
     def match_general(self):
         cont = 0
         pos4= pos3= pos2= pos1 = -1
-        for d in self.lista_d: #recorro array de donantes
+        for d in range(len(self.lista_d)): #recorro array de donantes
             
             if cont != 0: #si detecto cambios guardo posicion del donante y salgo del bucle(pero esto no tendria sentido, porque obligatoriamente guarda la primera posicionm ya que se inicializa en 0)
                 posd = d 
                 break
-            for k in d.organos: #recorro cada organo del donante
+            for k in self.lista_d[d].organos: #recorro cada organo del donante
                 if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1: #si detecto cambios, aumento el contador y vuelvo al for anterior
                     cont +=1
                     break
-                for i in self.lista_r: #busco un posible receptor
-                    if (i.prioridad==4 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre):
-                        espera = i.espera 
+                for i in range(len(self.lista_r)): #busco un posible receptor
+                    if (i.prioridad==4 and i.organo == k and i.tipo_de_sangre == d.tipo_de_sangre):
+                        espera = self.lista_r[i].espera 
                         if i==0:
                             fmin4=espera
                             pos4=i
@@ -175,8 +171,8 @@ class INCUCAI:
                             fmin4=espera
                             pos4=i
 
-                    if (i.prioridad==3 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre):
-                        espera = i.espera 
+                    elif (i.prioridad==3 and i.organo == k and i.tipo_de_sangre == d.tipo_de_sangre):
+                        espera = self.lista_r[i].espera 
                         if i==0:
                             fmin3=espera
                             pos3=i
@@ -184,20 +180,20 @@ class INCUCAI:
                             fmin3=espera
                             pos3=i
 
-                    elif (i.prioridad==2 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre):
-                        espera = i.espera 
+                    elif (i.prioridad==2 and i.organo == k and i.tipo_de_sangre == d.tipo_de_sangre):
+                        espera = self.lista_r[i].espera
                         if i==0:
-                            fmin3=espera
-                            pos3=i
+                            fmin2=espera
+                            pos2=i
                         elif(espera < fmin2):
                             fmin2=espera 
                             pos2=i
 
-                    elif (i.prioridad==1 and i.organo == k.organo and i.tipo_de_sangre == k.tipo_de_sangre):
-                        espera = i.espera 
+                    elif (i.prioridad==1 and i.organo == k and i.tipo_de_sangre == d.tipo_de_sangre):
+                        espera = self.lista_r[i].espera
                         if i==0:
-                            fmin3=espera
-                            pos3=i
+                            fmin1=espera
+                            pos1=i
                         elif(espera < fmin1):
                             fmin1=espera 
                             pos1=i
