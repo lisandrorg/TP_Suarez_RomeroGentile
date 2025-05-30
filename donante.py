@@ -8,4 +8,9 @@ class DONANTE(PACIENTE):
         self.organos = organos
     
     def __str__(self):
-        return f"{self.nombre} - {self.DNI} - {self.nacimiento} - {self.sexo} - {self.telefono} - {self.tipo_de_sangre} - {self.centro_de_salud} - "
+        if not self.organos:
+            organos_str = "Ninguna"
+        else:
+            organos_str = " - ".join(str(a) for a in self.organos)
+
+        return f"{self.nombre} - {self.DNI} - {self.nacimiento} - {self.sexo} - {self.telefono} - {self.tipo_de_sangre} - {self.centro_de_salud} - {organos_str if organos_str else 'Ninguna'}"

@@ -26,17 +26,17 @@ class INCUCAI:
 
     def registrar_paciente(self, paciente:RECEPTOR|DONANTE): 
         for i in self.lista_d + self.lista_r: #verifico que el paciente no este registrado ya
-            if(i.DNI == paciente.DNI or i.DNI == paciente.DNI):
+            if(i.DNI.__eq__(paciente.DNI) or i.DNI.__eq__(paciente.DNI)):
                 print("El paciente con DNI:", paciente.DNI ,"ya se encuentra registrado.")
                 return
 
         cont = 0
         for i in self.lista_c:   #verifico que el centro del paciente este registrado
-            if(i.nombre == paciente.centro_de_salud):
-                cont +=1
+            if(i.nombre.__eq__(paciente.centro_de_salud)):
+                cont = cont+1
                 break
 
-        if cont == 0:
+        if cont.__eq__(0):
             print("El paciente con DNI:", paciente.DNI, "pertenece a un centro de salud no registrado.")
             return
         
@@ -55,7 +55,7 @@ class INCUCAI:
         
         if type(centro) == CENTRO:
             for i in self.lista_c: 
-                if(i.nombre == centro.nombre):
+                if(i.nombre.__eq__(centro.nombre)):
                     print("El centro:", centro.nombre ,"ya se encuentra registrado.")
                     return
             self.lista_c.append(centro)
@@ -66,20 +66,20 @@ class INCUCAI:
             return
 
     def match_inmediato(self, paciente: DONANTE):
-        pos4= pos3= pos2= pos1 = -1
+        pos4 = pos3 = pos2 = pos1 = -1
         for k in paciente.organos: #recibo un objeto donante e inmediatamente recorro su lista de organos disponibles
-            if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1: #en caso de detectar cambios significaria que se a encontrado algun posible receptor 
+            if pos1.__ne__(-1) or pos2.__ne__(-1) or pos3.__ne__(-1) or pos4.__ne__(-1): #en caso de detectar cambios significaria que se a encontrado algun posible receptor 
                 break
             for i in range(len(self.lista_r)):
-                if (self.lista_r[i].prioridad==4 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre): #condiciones necesarias, tengo en cuenta que receptor lleva mas tiempo de espera para priorizarlo
+                if (self.lista_r[i].prioridad.__eq__(4) and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre): #condiciones necesarias, tengo en cuenta que receptor lleva mas tiempo de espera para priorizarlo
                     espera = self.lista_r[i].espera 
-                    if i==0:
+                    if i.__eq__(0):
                         fmin4=espera
                         pos4=i
                     elif (espera < fmin4):
                         fmin4=espera
                         pos4=i
-                elif (self.lista_r[i].prioridad==3 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre):
+                elif (self.lista_r[i].prioridad.__eq__(3) and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre):
                     espera = self.lista_r[i].espera
                     if i==0:
                         fmin3=espera
@@ -87,7 +87,7 @@ class INCUCAI:
                     elif (espera < fmin3):
                         fmin3=espera
                         pos3=i
-                elif (self.lista_r[i].prioridad==2 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre):
+                elif (self.lista_r[i].prioridad.__eq__(2) and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre):
                     espera = self.lista_r[i].espera
                     if i==0:
                         fmin2=espera
@@ -95,7 +95,7 @@ class INCUCAI:
                     elif(espera < fmin2):
                         fmin2=espera 
                         pos2=i
-                elif (self.lista_r[i].prioridad==1 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre):
+                elif (self.lista_r[i].prioridad.__eq__(1) and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre):
                     espera = self.lista_r[i].espera
                     if i==0:
                         fmin1=espera
@@ -104,7 +104,7 @@ class INCUCAI:
                         fmin1=espera 
                         pos1=i
                     
-        if (pos4 != -1): #verifico si encontro un receptor de mayor prioridad, y unicamente hago su match antes de volver al menu
+        if (pos4.__ne__(-1)): #verifico si encontro un receptor de mayor prioridad, y unicamente hago su match antes de volver al menu
             self.procedimiento.append(self.lista_r[pos4].DNI)
             self.procedimiento.append(paciente.DNI)
             self.procedimiento.append(self.lista_r[pos4].organo)
@@ -114,7 +114,7 @@ class INCUCAI:
             tiempo=self.viaje()
             self.operar(tiempo, pos4)
 
-        elif (pos4 == -1 and pos3 != -1):
+        elif (pos4.__eq__(-1) and pos3.__ne__(-1)):
             self.procedimiento.append(self.lista_r[pos3].DNI)
             self.procedimiento.append(paciente.DNI)
             self.procedimiento.append(self.lista_r[pos3].organo)
@@ -124,7 +124,7 @@ class INCUCAI:
             tiempo=self.viaje()
             self.operar(tiempo, pos3)
 
-        elif (pos4 == -1 and pos3 == -1 and pos2 != -1):
+        elif (pos4.__eq__(-1) and pos3.__eq__(-1) and pos2.__ne__(-1)):
             self.procedimiento.append(self.lista_r[pos2].DNI)
             self.procedimiento.append(paciente.DNI)
             self.procedimiento.append(self.lista_r[pos2].organo)
@@ -134,7 +134,7 @@ class INCUCAI:
             tiempo=self.viaje()
             self.operar(tiempo, pos2)
 
-        elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 != -1):
+        elif (pos4.__eq__(-1) and pos3.__eq__(-1) and pos2.__eq__(-1) and pos1.__ne__(-1)):
             self.procedimiento.append(self.lista_r[pos1].DNI)
             self.procedimiento.append(paciente.DNI)
             self.procedimiento.append(self.lista_r[pos1].organo)
@@ -144,7 +144,7 @@ class INCUCAI:
             tiempo=self.viaje()
             self.operar(tiempo, pos1)
 
-        elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 == -1):
+        elif (pos4.__eq__(-1) and pos3.__eq__(-1) and pos2.__eq__(-1) and pos1.__eq__(-1)):
             print('No se ha encontrado una coincidencia')
             return
 
@@ -158,39 +158,39 @@ class INCUCAI:
                 break
             for k in self.lista_d[d].organos: #recorro cada organo del donante
                 if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1: #si detecto cambios, aumento el contador y vuelvo al for anterior
-                    cont +=1
+                    cont.__add__(1)
                     break
                 for i in range(len(self.lista_r)): #busco un posible receptor
-                    if (self.lista_r[i].prioridad==4 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
+                    if (self.lista_r[i].prioridad.__eq__(4) and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
                         espera = self.lista_r[i].espera 
-                        if i==0:
+                        if i.__eq__(0):
                             fmin4=espera
                             pos4=i
                         elif (espera < fmin4):
                             fmin4=espera
                             pos4=i
 
-                    elif (self.lista_r[i].prioridad==3 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
+                    elif (self.lista_r[i].prioridad.__eq__(3) and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
                         espera = self.lista_r[i].espera 
-                        if i==0:
+                        if i.__eq__(0):
                             fmin3=espera
                             pos3=i
                         elif (espera < fmin3):
                             fmin3=espera
                             pos3=i
 
-                    elif (self.lista_r[i].prioridad==2 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
+                    elif (self.lista_r[i].prioridad.__eq__(2) and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
                         espera = self.lista_r[i].espera
-                        if i==0:
+                        if i.__eq__(0):
                             fmin2=espera
                             pos2=i
                         elif(espera < fmin2):
                             fmin2=espera 
                             pos2=i
 
-                    elif (self.lista_r[i].prioridad==1 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
+                    elif (self.lista_r[i].prioridad.__eq__(1) and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
                         espera = self.lista_r[i].espera
-                        if i==0:
+                        if i.__eq__(0):
                             fmin1=espera
                             pos1=i
                         elif(espera < fmin1):
@@ -208,7 +208,7 @@ class INCUCAI:
                 tiempo=self.viaje()
                 self.operar(tiempo, pos4)
 
-            elif (pos4 == -1 and pos3 != -1):
+            elif (pos4.__eq__(-1) and pos3 != -1):
                 self.procedimiento.append(self.lista_r[pos3].DNI)
                 self.procedimiento.append(self.lista_d[posd].DNI)
                 self.procedimiento.append(self.lista_r[pos3].organo)
@@ -218,7 +218,7 @@ class INCUCAI:
                 tiempo=self.viaje()
                 self.operar(tiempo, pos3)
 
-            elif (pos4 == -1 and pos3 == -1 and pos2 != -1):
+            elif (pos4.__eq__(-1) and pos3.__eq__(-1) and pos2 != -1):
                 self.procedimiento.append(self.lista_r[pos2].DNI)
                 self.procedimiento.append(self.lista_d[posd].DNI)
                 self.procedimiento.append(self.lista_r[pos2].organo)
@@ -228,7 +228,7 @@ class INCUCAI:
                 tiempo=self.viaje()
                 self.operar(tiempo, pos2)
                 
-            elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 != -1):
+            elif (pos4.__eq__(-1) and pos3.__eq__(-1) and pos2.__eq__(-1) and pos1 != -1):
                 self.procedimiento.append(self.lista_r[pos1].DNI)
                 self.procedimiento.append(self.lista_d[posd].DNI)
                 self.procedimiento.append(self.lista_r[pos1].organo)
@@ -238,7 +238,7 @@ class INCUCAI:
                 tiempo=self.viaje()
                 self.operar(tiempo, pos1)
 
-            elif (pos4 == -1 and pos3 == -1 and pos2 == -1 and pos1 == -1):
+            elif (pos4.__eq__(-1) and pos3.__eq__(-1) and pos2.__eq__(-1) and pos1.__eq__(-1)):
                 print('No se ha encontrado una coincidencia')
                 return                  
 
@@ -265,7 +265,7 @@ class INCUCAI:
                 if(cond_avion == True):
                     self.procedimiento.append(i)
                     self.lista_c[p_centro_donante].vehiculos[i].dispo = 0
-                    contv+=1
+                    contv.__add__(1)
                     break
 
         elif (condicion2==True and condicion1==False): 
@@ -273,18 +273,18 @@ class INCUCAI:
                 if(cond_avion == False and cond_helicoptero == True):
                     self.procedimiento.append(i)
                     self.lista_c[p_centro_donante].vehiculos[i].dispo = 0
-                    contv+=1
+                    contv.__add__(1)
                     break
 
-        elif (condicion2==False and condicion1==False): 
+        elif (condicion2 == False and condicion1 == False): 
             for i in range(len(self.lista_c[p_centro_donante].vehiculos)):
                 if(cond_avion == False and cond_helicoptero == False and cond_ambulancia == True):
                     self.procedimiento.append(i)
                     self.lista_c[p_centro_donante].vehiculos[i].dispo = 0
-                    contv+=1
+                    contv.__add__(1)
                     break
 
-        if (contv == 0):
+        if (contv.__eq__(0)):
             print('No se encontraron vehiculos disponibles para el transporte.')
             self.procedimiento.clear()
             return True
@@ -293,32 +293,32 @@ class INCUCAI:
     
         for i in range(len(self.lista_c[self.procedimiento[3]].cirujanos)):
 
-            if( self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Gastroenterolo" and (self.procedimiento[2] == "Intestinos" or self.procedimiento[2] == "Riñon" or self.procedimiento[2] == "Higado" or self.procedimiento[2] == "Pancreas")):
+            if( self.lista_c[self.procedimiento[3]].cirujanos[i].dispo.__eq__(1) and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Gastroenterolo" and (self.procedimiento[2] == "Intestinos" or self.procedimiento[2] == "Riñon" or self.procedimiento[2] == "Higado" or self.procedimiento[2] == "Pancreas")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
                 self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
-            elif( self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Traumatologo" and (self.procedimiento[2] == "Hueso")):
+            elif( self.lista_c[self.procedimiento[3]].cirujanos[i].dispo.__eq__(1) and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Traumatologo" and (self.procedimiento[2] == "Hueso")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
                 self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
-            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Cardiovascular" and (self.procedimiento[2] == "Corazon")):
+            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo.__eq__(1) and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Cardiovascular" and (self.procedimiento[2] == "Corazon")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
                 self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
-            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Pulmonar" and (self.procedimiento[2] == "Pulmones")):
+            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo.__eq__(1) and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Pulmonar" and (self.procedimiento[2] == "Pulmones")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
                 self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
-            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Plastico" and (self.procedimiento[2] == "Piel" or self.procedimiento[2] == "Corneas")):
+            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo.__eq__(1) and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Plastico" and (self.procedimiento[2] == "Piel" or self.procedimiento[2] == "Corneas")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
                 self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
-            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "General"):
+            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo.__eq__(1) and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "General"):
                 self.procedimiento.append("No")
                 self.procedimiento.append(i)
                 self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
@@ -337,7 +337,7 @@ class INCUCAI:
         if self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].tipo == 'Ambulancia':
             trafico = random.randint(0,40)
             distancia = random.randint(60,150)
-            tiempo = (distancia + trafico)/self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].velocidad
+            tiempo = (distancia.__add__(trafico))/self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].velocidad
 
         elif self.lista_c[self.procedimiento[3]].vehiculos[self.procedimiento[5]].tipo == 'Helicoptero':
             distancia = random.randint(150, 350)
@@ -391,7 +391,7 @@ class INCUCAI:
                 break
 
         del(self.lista_d[posd].organos[pos_org])
-        if len(self.lista_d[posd].organos) == 0:
+        if len(self.lista_d[posd].organos).__eq__(0):
             del (self.lista_d[posd])
         self.procedimiento.clear() 
         return

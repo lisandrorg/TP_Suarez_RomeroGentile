@@ -226,7 +226,7 @@ def main():
                         if j == incucai.lista_c[aux]:
                             incucai.lista_c[aux].registrar_cirujano(cirujano)
                             
-                 #menu para registrar cirujanos
+                #menu para registrar cirujanos
             
             elif (eleccion == "5"):                
                 hospital_central = CENTRO(
