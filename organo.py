@@ -4,3 +4,7 @@ class ORGANOS():
         self.organo = organo
         self.fecha = fecha
         self.hora = hora
+    
+    def __str__(self):
+
+        return f"{self.organo}"

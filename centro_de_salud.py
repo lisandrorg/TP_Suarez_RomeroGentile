@@ -25,6 +25,6 @@ class CENTRO:
                 print("El cirujano ya se encontraba registrado")
                 return
         self.cirujanos.append(cirujano)
-        print("El vehiculo se ha registrado con exito.")
+        print("El cirujano se ha registrado con exito.")
 
 

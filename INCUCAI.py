@@ -22,8 +22,7 @@ class INCUCAI:
         for i in range(len(self.lista_c)):
             if self.lista_c[i].nombre == nombre:
                 return i 
-            else:
-                return -1
+        return -1
 
     def registrar_paciente(self, paciente:RECEPTOR|DONANTE): 
         for i in self.lista_d + self.lista_r: #verifico que el paciente no este registrado ya
@@ -72,7 +71,7 @@ class INCUCAI:
             if pos1 != -1 or pos2 != -1 or pos3 != -1 or pos4 != -1: #en caso de detectar cambios significaria que se a encontrado algun posible receptor 
                 break
             for i in range(len(self.lista_r)):
-                if (i.prioridad==4 and i.organo == k and i.tipo_de_sangre == paciente.tipo_de_sangre): #condiciones necesarias, tengo en cuenta que receptor lleva mas tiempo de espera para priorizarlo
+                if (self.lista_r[i].prioridad==4 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre): #condiciones necesarias, tengo en cuenta que receptor lleva mas tiempo de espera para priorizarlo
                     espera = self.lista_r[i].espera 
                     if i==0:
                         fmin4=espera
@@ -80,7 +79,7 @@ class INCUCAI:
                     elif (espera < fmin4):
                         fmin4=espera
                         pos4=i
-                elif (i.prioridad==3 and i.organo == k and i.tipo_de_sangre == paciente.tipo_de_sangre):
+                elif (self.lista_r[i].prioridad==3 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre):
                     espera = self.lista_r[i].espera
                     if i==0:
                         fmin3=espera
@@ -88,7 +87,7 @@ class INCUCAI:
                     elif (espera < fmin3):
                         fmin3=espera
                         pos3=i
-                elif (i.prioridad==2 and i.organo == k and i.tipo_de_sangre == paciente.tipo_de_sangre):
+                elif (self.lista_r[i].prioridad==2 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre):
                     espera = self.lista_r[i].espera
                     if i==0:
                         fmin2=espera
@@ -96,7 +95,7 @@ class INCUCAI:
                     elif(espera < fmin2):
                         fmin2=espera 
                         pos2=i
-                elif (i.prioridad==1 and i.organo == k and i.tipo_de_sangre == paciente.tipo_de_sangre):
+                elif (self.lista_r[i].prioridad==1 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == paciente.tipo_de_sangre):
                     espera = self.lista_r[i].espera
                     if i==0:
                         fmin1=espera
@@ -162,7 +161,7 @@ class INCUCAI:
                     cont +=1
                     break
                 for i in range(len(self.lista_r)): #busco un posible receptor
-                    if (i.prioridad==4 and i.organo == k and i.tipo_de_sangre == d.tipo_de_sangre):
+                    if (self.lista_r[i].prioridad==4 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
                         espera = self.lista_r[i].espera 
                         if i==0:
                             fmin4=espera
@@ -171,7 +170,7 @@ class INCUCAI:
                             fmin4=espera
                             pos4=i
 
-                    elif (i.prioridad==3 and i.organo == k and i.tipo_de_sangre == d.tipo_de_sangre):
+                    elif (self.lista_r[i].prioridad==3 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
                         espera = self.lista_r[i].espera 
                         if i==0:
                             fmin3=espera
@@ -180,7 +179,7 @@ class INCUCAI:
                             fmin3=espera
                             pos3=i
 
-                    elif (i.prioridad==2 and i.organo == k and i.tipo_de_sangre == d.tipo_de_sangre):
+                    elif (self.lista_r[i].prioridad==2 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
                         espera = self.lista_r[i].espera
                         if i==0:
                             fmin2=espera
@@ -189,7 +188,7 @@ class INCUCAI:
                             fmin2=espera 
                             pos2=i
 
-                    elif (i.prioridad==1 and i.organo == k and i.tipo_de_sangre == d.tipo_de_sangre):
+                    elif (self.lista_r[i].prioridad==1 and self.lista_r[i].organo == k and self.lista_r[i].tipo_de_sangre == d.tipo_de_sangre):
                         espera = self.lista_r[i].espera
                         if i==0:
                             fmin1=espera
@@ -244,23 +243,25 @@ class INCUCAI:
                 return                  
 
     def transporte(self, posicion: int):
-        
-        for i in self.lista_d:
-            if i.DNI == self.procedimiento[2]:
+        d=0
+        for i in range(len(self.lista_d)):
+            if self.lista_d[i].DNI == self.procedimiento[2]:
                 d=i
                 break
-        
+        # me creo una lista de vehiculos primero
         p_centro_donante = self.buscar_centro(self.lista_d[d].centro_de_salud) 
+        self.procedimiento.append(p_centro_donante)
         p_centro_receptor = self.buscar_centro(self.lista_r[posicion].centro_de_salud)
+        self.procedimiento.append(p_centro_donante)
         condicion1 = (self.lista_c[p_centro_donante].provincia != self.lista_c[p_centro_receptor].provincia)
         condicion2 =(self.lista_c[p_centro_donante].partido != self.lista_c[p_centro_receptor].partido)
-        cond_avion = (i.tipo == "Avion" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1)
-        cond_helicoptero = (i.tipo == "Helicoptero" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1)
-        cond_ambulancia = (i.tipo == "Ambulancia" and i.centro == self.lista_c[p_centro_donante].nombre and self.dispo == 1)
+        cond_avion = (self.lista_c[p_centro_donante].vehiculos[i].tipo == "Avion" and self.lista_c[p_centro_donante].vehiculos[i].centro == self.lista_c[p_centro_donante].nombre and self.lista_c[p_centro_donante].vehiculos[i].dispo == 1)
+        cond_helicoptero = (self.lista_c[p_centro_donante].vehiculos[i].tipo == "Helicoptero" and self.lista_c[p_centro_donante].vehiculos[i].centro == self.lista_c[p_centro_donante].nombre and self.lista_c[p_centro_donante].vehiculos[i].dispo == 1)
+        cond_ambulancia = (self.lista_c[p_centro_donante].vehiculos[i].tipo == "Ambulancia" and self.lista_c[p_centro_donante].vehiculos[i].centro == self.lista_c[p_centro_donante].nombre and self.lista_c[p_centro_donante].vehiculos[i].dispo == 1)
         contv=0
 
         if (condicion1==True):
-            for i in self.lista_c[p_centro_donante].vehiculos:
+            for i in range(len(self.lista_c[p_centro_donante].vehiculos)):
                 if(cond_avion == True):
                     self.procedimiento.append(i)
                     self.lista_c[p_centro_donante].vehiculos[i].dispo = 0
@@ -268,7 +269,7 @@ class INCUCAI:
                     break
 
         elif (condicion2==True and condicion1==False): 
-            for i in self.lista_c[p_centro_donante].vehiculos:
+            for i in range(len(self.lista_c[p_centro_donante].vehiculos)):
                 if(cond_avion == False and cond_helicoptero == True):
                     self.procedimiento.append(i)
                     self.lista_c[p_centro_donante].vehiculos[i].dispo = 0
@@ -276,7 +277,7 @@ class INCUCAI:
                     break
 
         elif (condicion2==False and condicion1==False): 
-            for i in self.lista_c[p_centro_donante].vehiculos:
+            for i in range(len(self.lista_c[p_centro_donante].vehiculos)):
                 if(cond_avion == False and cond_helicoptero == False and cond_ambulancia == True):
                     self.procedimiento.append(i)
                     self.lista_c[p_centro_donante].vehiculos[i].dispo = 0
@@ -290,40 +291,40 @@ class INCUCAI:
 
         ############
     
-        for i in self.lista_c[self.procedimiento[3]].cirujanos:
+        for i in range(len(self.lista_c[self.procedimiento[3]].cirujanos)):
 
-            if( i.dispo == 1 and i.especialidad ==  "Gastroenterolo" and (self.procedimiento[2] == "Intestinos" or self.procedimiento[2] == "Riñon" or self.procedimiento[2] == "Higado" or self.procedimiento[2] == "Pancreas")):
+            if( self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Gastroenterolo" and (self.procedimiento[2] == "Intestinos" or self.procedimiento[2] == "Riñon" or self.procedimiento[2] == "Higado" or self.procedimiento[2] == "Pancreas")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
-                i.dispo = 0
+                self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
-            if( i.dispo == 1 and i.especialidad ==  "Traumatologo" and (self.procedimiento[2] == "Hueso")):
+            elif( self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Traumatologo" and (self.procedimiento[2] == "Hueso")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
-                i.dispo = 0
+                self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
-            if(i.dispo == 1 and i.especialidad ==  "Cardiovascular" and (self.procedimiento[2] == "Corazon")):
+            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Cardiovascular" and (self.procedimiento[2] == "Corazon")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
-                i.dispo = 0
+                self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
-            if(i.dispo == 1 and i.especialidad ==  "Pulmonar" and (self.procedimiento[2] == "Pulmones")):
+            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Pulmonar" and (self.procedimiento[2] == "Pulmones")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
-                i.dispo = 0
+                self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
-            if(i.dispo == 1 and i.especialidad ==  "Plastico" and (self.procedimiento[2] == "Piel" or self.procedimiento[2] == "Corneas")):
+            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "Plastico" and (self.procedimiento[2] == "Piel" or self.procedimiento[2] == "Corneas")):
                 self.procedimiento.append("Si")
                 self.procedimiento.append(i)
-                i.dispo = 0
+                self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
-            if(i.dispo == 1 and i.especialidad ==  "General"):
-                self.procedimiento.append("Si")
+            elif(self.lista_c[self.procedimiento[3]].cirujanos[i].dispo == 1 and self.lista_c[self.procedimiento[3]].cirujanos[i].especialidad ==  "General"):
+                self.procedimiento.append("No")
                 self.procedimiento.append(i)
-                i.dispo = 0
+                self.lista_c[self.procedimiento[3]].cirujanos[i].dispo = 0
                 break
             else:
-                print("no se ha podido encontrar un doctor disponible")
+                print("No se ha podido encontrar un doctor disponible")
                 self.procedimiento.clear()
                 return True
         return 
@@ -368,7 +369,7 @@ class INCUCAI:
                 else:
                     print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'no se realizo exitosamente.')
                     self.lista_r[posicion].prioridad = 4
-                    self.lista_r[posicion].estado = "inestable"
+                    
             else: 
                 if exito > 5:
                     print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'se realizo exitosamente.')
@@ -377,15 +378,15 @@ class INCUCAI:
                 else:
                     print('La operacion de ', self.procedimiento[2] ,' del paciente ', self.procedimiento[0] ,'no se realizo exitosamente.')
                     self.lista_r[posicion].prioridad = 4
-                    self.lista_r[posicion].estado = "inestable"
+                    
 
         self.lista_c[self.procedimiento[3]].cirujanos[self.procedimiento[7]].dispo = 1
-        for i in self.lista_d:
-            if i.DNI == self.procedimiento[1]:
+        for i in range(len(self.lista_d)):
+            if self.lista_d[i].DNI == self.procedimiento[1]:
                 posd = i
                 break
-        for i in self.lista_d[posd].organos:
-            if i == self.procedimiento[2]:
+        for i in range(len(self.lista_d[posd].organos)):
+            if self.lista_d[posd].organos[i] == self.procedimiento[2]:
                 pos_org = i
                 break
 

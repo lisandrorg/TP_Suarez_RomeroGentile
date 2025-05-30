@@ -6,3 +6,6 @@ class RECEPTOR(PACIENTE):
         self.organo = organo
         self.espera = espera
         self.prioridad = prioridad #Baja, Media, Alta
+
+    def __str__(self):
+        return f"{self.nombre} - {self.DNI} - {self.nacimiento} - {self.sexo} - {self.telefono} - {self.tipo_de_sangre} - {self.centro_de_salud} - {self.organo} - {self.espera} - {self.prioridad}"
