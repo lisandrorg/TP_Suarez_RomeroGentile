@@ -1,11 +1,11 @@
-from receptor import RECEPTOR
-from donante import DONANTE
-from centro_de_salud import CENTRO
-from paciente import PACIENTE
-from vehiculo import VEHICULO
-from cirujano import CIRUJANO
+from Paciente.receptor import RECEPTOR
+from Paciente.donante import DONANTE
+from Centro.centro import CENTRO
+from Paciente.paciente import PACIENTE
+from Vehiculo.vehiculo import VEHICULO
+from Cirujano.cirujano import CIRUJANO
 from datetime import datetime
-from viajes import VIAJES
+from Viajes.viajes import VIAJES
 import random
 from datetime import datetime, time, timedelta
 

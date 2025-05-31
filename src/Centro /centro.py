@@ -1,5 +1,5 @@
-from vehiculo import VEHICULO
-from cirujano import CIRUJANO
+from Vehiculo.vehiculo import VEHICULO
+from Cirujano.cirujano import CIRUJANO
 
 class CENTRO:
 
