@@ -3,3 +3,6 @@ class VIAJES:
         self.organo = organo 
         self.distancia = distancia 
         self.fecha = fecha
+
+    def __str__(self):
+        return f" {self.organo} - {self.distancia} Km - {self.fecha} "

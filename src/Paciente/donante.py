@@ -1,4 +1,4 @@
-from paciente import PACIENTE
+from Paciente.paciente import PACIENTE
 
 class DONANTE(PACIENTE):
     def __init__(self, nombre: str , DNI: int, nacimiento: int, sexo: str, telefono: int, tipo_de_sangre: str, centro_de_salud: str, organos: str):
