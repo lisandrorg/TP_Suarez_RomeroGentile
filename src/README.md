@@ -1,2 +1,3 @@
-# TP_LABO_PROGRA
-Trabajo final de Laboratorio de Programacion
+# Trabajo final de Laboratorio de Programacion #
+Matias Federico Suarez y Lisandro Romero Gentile
+                Grupo 17
