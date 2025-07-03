@@ -1,4 +1,6 @@
-class CIRUJANO:
+class Cirujano:
+
+
     def __init__(self, matricula: int, especialidad: str, centro ):
         self.matricula = matricula
         self.especialidad = especialidad 

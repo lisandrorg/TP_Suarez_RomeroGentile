@@ -1,4 +1,10 @@
-class PACIENTE:
+from abc import abstractmethod
+
+
+
+class Paciente:
+
+
     def __init__(self, nombre: str, DNI: int, nacimiento: int, sexo: str, telefono: int, tipo_de_sangre: str, centro_de_salud: str):
         self.nombre = nombre 
         self.DNI = DNI
@@ -7,3 +13,7 @@ class PACIENTE:
         self.telefono = telefono
         self.tipo_de_sangre = tipo_de_sangre
         self.centro_de_salud = centro_de_salud
+
+    @abstractmethod
+    def __str__(self):
+        pass
