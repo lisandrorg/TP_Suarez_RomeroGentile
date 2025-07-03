@@ -7,9 +7,14 @@ from vehiculo.avion import Avion
 from vehiculo.helicoptero import Helicoptero
 from incucai.incucai import Incucai
 
+
+
 class Menu:
-    def main():
+
+    def __init__(incucai):
         incucai = Incucai()
+
+    def mostrar_menu(incucai):
         i=0
         while i == 0:
                 
@@ -242,7 +247,6 @@ class Menu:
                     provincia = str(input('Ingrese la provincia a la que pertenece el centro: '))
                     centro = Centro(nombre, direccion, partido, provincia)
                     incucai.registrar_centro(centro)
-                    #menu para registrar centros de salud
                 
                 elif (eleccion == "3"):
                     
@@ -1589,11 +1593,7 @@ class Menu:
                         print("El vehículo no se encuentra registrado.")
 
                 elif (eleccion == "0"):
-                                return
+                    return
 
                 else:
                     print("No se registro su respuesta, porfavor reingrese nuevamente una opcion.")
-        
-
-    if __name__ == "__main__":
-        main()

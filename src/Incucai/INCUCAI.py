@@ -28,7 +28,6 @@ class Incucai:
         
         '''
             Permite saber la posicion de un centro de salud en la lista de centros
-
         PARAMETROS:
             -nombre: una variable de tipo string en el cual se 
             recibe el nombre de un centro de salud
@@ -83,14 +82,14 @@ class Incucai:
         
         '''
             Se puede registrar un paciente, este es filtrado dependiendo de 
-        si es receptor o donante, pero antes se verifica que no esté previamente 
-        registrado y que este asociado a un centro de salud registrado en el 
-        sistema. En caso de encontrar un paciente ya registrado se muestra
-        un mensaje en pantalla dando a conocer esto, en caso de registrarse 
-        correctamente al paciente tambien se muestra un mensaje en pantalla 
-        y si el paciente era donante se busca un match inmediatamente.
+            si es receptor o donante, pero antes se verifica que no esté previamente 
+            registrado y que este asociado a un centro de salud registrado en el 
+            sistema. En caso de encontrar un paciente ya registrado se muestra
+            un mensaje en pantalla dando a conocer esto, en caso de registrarse 
+            correctamente al paciente tambien se muestra un mensaje en pantalla 
+            y si el paciente era donante se busca un match inmediatamente.
         PARAMETROS:
-            -paciente: una variable de tipo RECEPTOR o DONANTE 
+            -paciente: una variable de tipo Receptor o Donante 
         RETURNS:
             -No retorna nada.
         '''
@@ -101,7 +100,7 @@ class Incucai:
                 return
 
         cont = 0
-        for i in self.lista_c:   #verifico que el centro del paciente este registrado
+        for i in self.lista_c: 
             cont = self.buscar_centro(i.nombre)
             if cont != -1:
                 break
@@ -179,7 +178,6 @@ class Incucai:
             cual se va a buscar un receptor en base a que organos se encuentran 
             disponibles de cada donante. Posteriorimente se llaman a las funciones 
             encargadas de las demas tareas.
-
         PARAMETROS:
             -paciente: una variable de tipo DONANTE
         RETURNS:
@@ -214,7 +212,6 @@ class Incucai:
             A su vez, se busca un cirujano perteneciente al 
             centro del donante el cual este disponible para
             llevar a cabo la operacion.
-
         PARAMETROS:
             -posicion: una variable de tipo int que contiene
             la posicion del receptor en la lista de receptores
@@ -280,7 +277,6 @@ class Incucai:
             Se fija una fecha y hora de ablacion, ademas que se obtiene 
             el tiempo necesario de viaje para el medio de transporte 
             establecido.
-
         PARAMETROS:
             -No recibe parametros
         RETURNS:
@@ -290,10 +286,21 @@ class Incucai:
 
         self.__procedimiento.append(datetime.now().date())
         self.__procedimiento.append(datetime.now().time())
-        tiempo = self.lista_c[self.__procedimiento[3]].vehiculos[self.__procedimiento[5]].calcular_distancia(self.__procedimiento[2], self.__procedimiento[8])
+        tiempo = self.lista_c[self.__procedimiento[3]].vehiculos[self.__procedimiento[5]].calcular_distancia(self.__procedimiento[2], self.__procedimiento[8]) #Accedo a la posicion del vehiculo en en el array de vehiculos de su centor y calculo distancia con el metodo propio del vehiculo
         return tiempo
 
     def __operar(self, tiempo: int , posicion: int) -> None:
+        
+        '''
+            Se fija una hora de cirugia y llegada,
+        PARAMETROS:
+            -tiempo: una variable de tipo int que
+            contiene las horas de viaje del transporte
+            -posicion: una variable de tipo int que contiene
+            la posicion del receptor en la lista de receptores
+        RETURNS:
+            -No retorna nada.
+        '''
         
         hora_cirugia = datetime.combine(datetime.today(), self.__procedimiento[9]) + timedelta(hours = 20)
         hora_llegada = datetime.combine(datetime.today(), self.__procedimiento[9]) + timedelta(hours = tiempo)
@@ -301,7 +308,6 @@ class Incucai:
         if hora_llegada > hora_cirugia:
             print('La ablacion ha superado las 20 horas.')
             self.__procedimiento(2,1,posicion)
-
         else:
             valor = random.randint(1,10)
             if (self.__procedimiento[4] == 'Si'):
@@ -316,7 +322,6 @@ class Incucai:
         '''
             Se imprime en pantalla las listas tanto de 
             receptores como de donantes.
-
         PARAMETROS:
             -No recibe parametros
         RETURNS:
@@ -333,6 +338,24 @@ class Incucai:
         return
 
     def __buscar_prioridad(self, prioridad: int, organo: str, sangre: str) -> int:
+        
+        '''
+            Se imprime en pantalla las listas tanto de 
+            receptores como de donantes.
+        PARAMETROS:
+            -prioridad: una variable int que contiene 
+            la prioridad del paciente a buscar
+            -organo: una variable str que contiene el
+            organo a donar
+            -sangre: una variable str que contiene el 
+            tipo de sangre que posee el donante
+        RETURNS:
+            -Returna una variable pos de tipo int
+            que contiene la posicion del receptor en
+            el array de receptores. En caso de no 
+            encontrar a un receptor devuelve un -1.
+        '''
+
         pos = cont = -1
         for i in range(len(self.__lista_r)):
             if (self.__lista_r[i].prioridad.__eq__(prioridad) and self.__lista_r[i].organo == organo and self.__lista_r[i].tipo_de_sangre == sangre): 
@@ -346,7 +369,22 @@ class Incucai:
                     pos = i
         return pos
 
-    def __detectar_paciente (self, pos: int, paciente: Donante) -> None:
+    def __detectar_paciente (self, pos: list, paciente: Donante) -> None:
+        
+        '''
+            Se verifica la posicion del receptor elegido
+            para llevar a cabo la cirugia, posteriormente 
+            se llama a las funciones encargadas de las demas
+            tareas.
+        PARAMETROS:
+            -pos: una lista que contiene variables de tipo 
+            int con las posiciones de los posibles receptores
+            -paciente: una variable del tipo Donante que posee 
+            al donante que entregara su organo para la cirugia
+        RETURNS:
+            -No retorna nada.
+        '''
+
         cont = 0
         for i in pos:
             if (i != -1):
@@ -362,13 +400,45 @@ class Incucai:
                 break
         return cont
 
-    def __verificar_especialidad(self, pos: int):
+    def __verificar_especialidad(self, pos: int) -> None:
+        
+        '''
+            Se verifica si el cirujano elegido previamente
+            es especializado en el organo a operar. Se guarda
+            un string 'Si' en caso de que haya un cirujano 
+            asignado y se guarda su posicion en su lista.
+        PARAMETROS:
+            -pos: una variable int que contiene la posicion 
+            del cirujano en el array de cirujano dentro de 
+            la lista de cirujanos de su centro de salud.
+        RETURNS:
+            -No retorna nada.
+        '''
+
         if pos != -1:
             self.__procedimiento.append('Si')
             self.__procedimiento.append(pos)
         return
 
-    def __operacion (self, exito: int, valor: int, posicion: int):
+    def __operacion (self, exito: int, valor: int, posicion: int) -> None:
+        
+        '''
+            Se verifica si la operacion fue exitosa o no,
+            y se imprime en pantalla un mensaje para que
+            el usuario conozca el resultado.
+        PARAMETROS:
+            -exito: una variable de tipo int que contiene
+            el valor al cual hay que superar para que la 
+            operacion se realice exitosamente.
+            -valor: una variable de tipo int que contiene
+            el valor obtenido con el que se comparara para 
+            saber si la operacion fue exitosa o no.
+            -posicion: una variable int que posee la 
+            posicion del receptor en la lista de receptores.
+        RETURNS:
+            -No retorna nada.
+        '''
+
         if valor > exito:
             print('La operacion de ', self.__procedimiento[2] ,' del paciente ', self.__lista_r[posicion].nombre ,' se realizo exitosamente.')
             del(self.__lista_r[posicion])
@@ -377,7 +447,20 @@ class Incucai:
             self.__lista_r[posicion].prioridad = 4
         return
 
-    def __borrar_organo_donado(self):
+    def __borrar_organo_donado(self) -> None:
+        
+        '''
+            Se elimina el organo donado en la lista de
+            organos del donante, y se verifica que aun 
+            posea organos disponibles para donar. En 
+            caso que no hayan mas organos disponibles 
+            se elimina al donante de la lista de donantes
+        PARAMETROS:
+            -No se reciben parametros.
+        RETURNS:
+            -No retorna nada.
+        '''
+
         pos_org = -1
         posd= self.buscar_donante(self.__procedimiento[1])
         
