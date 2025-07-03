@@ -188,7 +188,7 @@ class Incucai:
         cont = -1
         for d in range(len(self.__lista_d)):  
             pos4 = pos3 = pos2 = pos1 = -1
-            if cont == 1:
+            if cont == 1 or cont == True:
                 break
             for k in self.__lista_d[d].organos:
                 if pos1.__ne__(-1) or pos2.__ne__(-1) or pos3.__ne__(-1) or pos4.__ne__(-1):
@@ -394,7 +394,7 @@ class Incucai:
                 self.__procedimiento.append(self.__lista_r[i].organo)
                 aux = self.__transporte(i)
                 if(aux == True): 
-                    return
+                    return True
                 tiempo=self.__viaje()
                 self.__operar(tiempo, i)
                 break
