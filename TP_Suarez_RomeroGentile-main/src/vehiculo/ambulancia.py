@@ -13,7 +13,7 @@ class Ambulancia(Vehiculo):
     def __init__(self, velocidad: int, patente: str, centro: str):
         super().__init__(velocidad, patente, centro)
 
-    def calcular_distancia(self, organo: str, ablacion: int):
+    def calcular_distancia(self, organo: str, ablacion: int) -> int:
         
         '''
             Se encarga de calcular el tiempo necesario de

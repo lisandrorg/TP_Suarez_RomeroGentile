@@ -22,7 +22,7 @@ class Centro:
         self.cirujanos = []
         self.vehiculos = []
 
-    def registrar_vehiculo(self, vehiculo: Vehiculo):
+    def registrar_vehiculo(self, vehiculo: Vehiculo) -> None:
         
         '''
             Se recibe un vehiculo, en caso de ya estar 
@@ -43,7 +43,7 @@ class Centro:
         self.vehiculos.append(vehiculo)
         print("El vehiculo se ha registrado con exito.")
 
-    def registrar_cirujano(self, cirujano: Cirujano):
+    def registrar_cirujano(self, cirujano: Cirujano) -> None:
         
         '''
             Se recibe un cirujano, en caso de ya estar 
@@ -64,7 +64,7 @@ class Centro:
         self.cirujanos.append(cirujano)
         print("El cirujano se ha registrado con exito.")
 
-    def buscar_vehiculo (self, tipo: Avion|Ambulancia|Helicoptero):
+    def buscar_vehiculo (self, tipo: Avion|Ambulancia|Helicoptero) -> int:
         
         '''
             Se busca un vehiculo del tipo necesario y disponible,
@@ -87,7 +87,7 @@ class Centro:
                 break
         return pos
 
-    def buscar_cirujano (self, especialidad: str):
+    def buscar_cirujano (self, especialidad: str) -> int:
         
         '''
             Se busca un cirujano del tipo necesario y disponible,

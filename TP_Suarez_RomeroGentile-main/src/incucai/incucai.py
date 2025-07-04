@@ -42,7 +42,7 @@ class Incucai:
                 return i 
         return -1
 
-    def buscar_donante(self, DNI: str) -> int:
+    def buscar_donante(self, DNI: int) -> int:
         
         '''
             Permite saber la posicion de un donante en la lista de donantes
@@ -60,7 +60,7 @@ class Incucai:
                 return i 
         return -1
 
-    def buscar_receptor(self, DNI: str) -> int:
+    def buscar_receptor(self, DNI: int) -> int:
         
         '''
             Permite saber la posicion de un receptor en la lista de receptores

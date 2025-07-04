@@ -19,7 +19,7 @@ class Vehiculo:
 
 
     @abstractmethod
-    def calcular_distancia(self, organo: str, ablacion: int):
+    def calcular_distancia(self, organo: str, ablacion: int) -> None:
         
         '''
             Se encarga de calcular el tiempo necesario de
