@@ -1,1 +1,4 @@
-![Diagrama en blanco](https://github.com/user-attachments/assets/90ad9904-e176-4ef7-8309-967b1769f660)
+# Trabajo final de Laboratorio de Programacion #
+Matias Federico Suarez y Lisandro Romero Gentile
+                Grupo 17
+![Diagrama en blanco (1)](https://github.com/user-attachments/assets/7e746933-f61a-465b-93dd-41fcd30520f3)
